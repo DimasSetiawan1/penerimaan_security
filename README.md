@@ -266,175 +266,175 @@ erDiagram
 
 a. Tabel `users`
 
-**Nama Tabel** : *users*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *9 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _users_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _9 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola data akun pengguna sistem (Admin & HRD)  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.1. Users**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Name | Varchar | 255 | Nama lengkap pengguna |
-| 3 | Email | Varchar | 255 | Alamat email (login) |
-| 4 | Email_verified_at | Timestamp | - | Waktu verifikasi email |
-| 5 | Password | Varchar | 255 | Kata sandi terenkripsi (Hash) |
-| 6 | Role | Varchar | 255 | Hak akses (`admin` / `hrd`) |
-| 7 | Remember_token | Varchar | 100 | Token sesi "remember me" |
-| 8 | Created_at | Timestamp | - | Waktu data dibuat |
-| 9 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name        | Data Type | Width | Keterangan                    |
+| --- | ----------------- | --------- | ----- | ----------------------------- |
+| 1   | Id                | Bigint    | 20    | Primary Key                   |
+| 2   | Name              | Varchar   | 255   | Nama lengkap pengguna         |
+| 3   | Email             | Varchar   | 255   | Alamat email (login)          |
+| 4   | Email_verified_at | Timestamp | -     | Waktu verifikasi email        |
+| 5   | Password          | Varchar   | 255   | Kata sandi terenkripsi (Hash) |
+| 6   | Role              | Varchar   | 255   | Hak akses (`admin` / `hrd`)   |
+| 7   | Remember_token    | Varchar   | 100   | Token sesi "remember me"      |
+| 8   | Created_at        | Timestamp | -     | Waktu data dibuat             |
+| 9   | Updated_at        | Timestamp | -     | Waktu data diperbarui         |
 
 ---
 
 b. Tabel `criterias`
 
-**Nama Tabel** : *criterias*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *9 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _criterias_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _9 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola data master kriteria penilaian terstandarisasi  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.2. Criterias**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Code | Varchar | 255 | Kode kriteria (C1, C2, C3, C4) |
-| 3 | Name | Varchar | 255 | Nama kriteria penilaian |
-| 4 | Type | Enum | - | Sifat kriteria (`benefit` / `cost`) |
-| 5 | Weight | Float | - | Nilai bobot kriteria ($W_j$) dalam % |
-| 6 | Min_val | Float | - | Nilai minimum indikator ($C_{min}$) |
-| 7 | Max_val | Float | - | Nilai maksimum indikator ($C_{max}$) |
-| 8 | Created_at | Timestamp | - | Waktu data dibuat |
-| 9 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name | Data Type | Width | Keterangan                           |
+| --- | ---------- | --------- | ----- | ------------------------------------ |
+| 1   | Id         | Bigint    | 20    | Primary Key                          |
+| 2   | Code       | Varchar   | 255   | Kode kriteria (C1, C2, C3, C4)       |
+| 3   | Name       | Varchar   | 255   | Nama kriteria penilaian              |
+| 4   | Type       | Enum      | -     | Sifat kriteria (`benefit` / `cost`)  |
+| 5   | Weight     | Float     | -     | Nilai bobot kriteria ($W_j$) dalam % |
+| 6   | Min_val    | Float     | -     | Nilai minimum indikator ($C_{min}$)  |
+| 7   | Max_val    | Float     | -     | Nilai maksimum indikator ($C_{max}$) |
+| 8   | Created_at | Timestamp | -     | Waktu data dibuat                    |
+| 9   | Updated_at | Timestamp | -     | Waktu data diperbarui                |
 
 ---
 
 c. Tabel `sub_criterias`
 
-**Nama Tabel** : *sub_criterias*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *6 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _sub_criterias_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _6 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola parameter indikator skala nilai 1 s/d 5 kriteria  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.3. Sub_criterias**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Criteria_id | Bigint | 20 | Foreign Key (`criterias.id`) |
-| 3 | Value | Int | 11 | Skala nilai indikator (1, 2, 3, 4, 5) |
-| 4 | Description | Text | - | Deskripsi kualitatif indikator |
-| 5 | Created_at | Timestamp | - | Waktu data dibuat |
-| 6 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name  | Data Type | Width | Keterangan                            |
+| --- | ----------- | --------- | ----- | ------------------------------------- |
+| 1   | Id          | Bigint    | 20    | Primary Key                           |
+| 2   | Criteria_id | Bigint    | 20    | Foreign Key (`criterias.id`)          |
+| 3   | Value       | Int       | 11    | Skala nilai indikator (1, 2, 3, 4, 5) |
+| 4   | Description | Text      | -     | Deskripsi kualitatif indikator        |
+| 5   | Created_at  | Timestamp | -     | Waktu data dibuat                     |
+| 6   | Updated_at  | Timestamp | -     | Waktu data diperbarui                 |
 
 ---
 
 d. Tabel `candidates`
 
-**Nama Tabel** : *candidates*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *10 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _candidates_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _10 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola biodata lengkap pelamar anggota security  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.4. Candidates**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Code | Varchar | 255 | Kode unik pelamar (K01, K02, dst) |
-| 3 | Nik | Varchar | 255 | NIK pelamar |
-| 4 | Name | Varchar | 255 | Nama lengkap pelamar |
-| 5 | Gender | Enum | - | Jenis kelamin (`L` / `P`) |
-| 6 | Phone | Varchar | 255 | Nomor HP / WhatsApp |
-| 7 | Address | Text | - | Alamat domisili |
-| 8 | Status | Enum | - | Status evaluasi (`Draft` / `Evaluated`) |
-| 9 | Created_at | Timestamp | - | Waktu data dibuat |
-| 10 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name | Data Type | Width | Keterangan                              |
+| --- | ---------- | --------- | ----- | --------------------------------------- |
+| 1   | Id         | Bigint    | 20    | Primary Key                             |
+| 2   | Code       | Varchar   | 255   | Kode unik pelamar (K01, K02, dst)       |
+| 3   | Nik        | Varchar   | 255   | NIK pelamar                             |
+| 4   | Name       | Varchar   | 255   | Nama lengkap pelamar                    |
+| 5   | Gender     | Enum      | -     | Jenis kelamin (`L` / `P`)               |
+| 6   | Phone      | Varchar   | 255   | Nomor HP / WhatsApp                     |
+| 7   | Address    | Text      | -     | Alamat domisili                         |
+| 8   | Status     | Enum      | -     | Status evaluasi (`Draft` / `Evaluated`) |
+| 9   | Created_at | Timestamp | -     | Waktu data dibuat                       |
+| 10  | Updated_at | Timestamp | -     | Waktu data diperbarui                   |
 
 ---
 
 e. Tabel `candidate_scores`
 
-**Nama Tabel** : *candidate_scores*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *6 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _candidate_scores_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _6 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola skor indikator (skala 1–5) pilihan pelamar  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.5. Candidate_scores**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Candidate_id | Bigint | 20 | Foreign Key (`candidates.id`) |
-| 3 | Criteria_id | Bigint | 20 | Foreign Key (`criterias.id`) |
-| 4 | Score_val | Int | 11 | Nilai indikator (Skala 1 s/d 5) |
-| 5 | Created_at | Timestamp | - | Waktu data dibuat |
-| 6 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name   | Data Type | Width | Keterangan                      |
+| --- | ------------ | --------- | ----- | ------------------------------- |
+| 1   | Id           | Bigint    | 20    | Primary Key                     |
+| 2   | Candidate_id | Bigint    | 20    | Foreign Key (`candidates.id`)   |
+| 3   | Criteria_id  | Bigint    | 20    | Foreign Key (`criterias.id`)    |
+| 4   | Score_val    | Int       | 11    | Nilai indikator (Skala 1 s/d 5) |
+| 5   | Created_at   | Timestamp | -     | Waktu data dibuat               |
+| 6   | Updated_at   | Timestamp | -     | Waktu data diperbarui           |
 
 ---
 
 f. Tabel `swot_evaluations`
 
-**Nama Tabel** : *swot_evaluations*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *13 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _swot_evaluations_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _13 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola skor evaluasi faktor internal/eksternal SWOT  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.6. Swot_evaluations**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Candidate_id | Bigint | 20 | Foreign Key (`candidates.id`) |
-| 3 | Strengths_score | Float | - | Skor Kekuatan ($S$) |
-| 4 | Weaknesses_score | Float | - | Skor Kelemahan ($W$) |
-| 5 | Opportunities_score | Float | - | Skor Peluang ($O$) |
-| 6 | Threats_score | Float | - | Skor Ancaman ($T$) |
-| 7 | Ifas_score | Float | - | Nilai Faktor Internal ($S - W$) |
-| 8 | Efas_score | Float | - | Nilai Faktor Eksternal ($O - T$) |
-| 9 | Quadrant | Enum | - | Kategori Kualifikasi Profil (`SO`/`ST`/`WO`/`WT`) |
-| 10 | Strategy_recommendation | Varchar | 255 | Rekomendasi kualifikasi |
-| 11 | Notes | Text | - | Catatan penilai / HRD |
-| 12 | Created_at | Timestamp | - | Waktu data dibuat |
-| 13 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name              | Data Type | Width | Keterangan                                        |
+| --- | ----------------------- | --------- | ----- | ------------------------------------------------- |
+| 1   | Id                      | Bigint    | 20    | Primary Key                                       |
+| 2   | Candidate_id            | Bigint    | 20    | Foreign Key (`candidates.id`)                     |
+| 3   | Strengths_score         | Float     | -     | Skor Kekuatan ($S$)                               |
+| 4   | Weaknesses_score        | Float     | -     | Skor Kelemahan ($W$)                              |
+| 5   | Opportunities_score     | Float     | -     | Skor Peluang ($O$)                                |
+| 6   | Threats_score           | Float     | -     | Skor Ancaman ($T$)                                |
+| 7   | Ifas_score              | Float     | -     | Nilai Faktor Internal ($S - W$)                   |
+| 8   | Efas_score              | Float     | -     | Nilai Faktor Eksternal ($O - T$)                  |
+| 9   | Quadrant                | Enum      | -     | Kategori Kualifikasi Profil (`SO`/`ST`/`WO`/`WT`) |
+| 10  | Strategy_recommendation | Varchar   | 255   | Rekomendasi kualifikasi                           |
+| 11  | Notes                   | Text      | -     | Catatan penilai / HRD                             |
+| 12  | Created_at              | Timestamp | -     | Waktu data dibuat                                 |
+| 13  | Updated_at              | Timestamp | -     | Waktu data diperbarui                             |
 
 ---
 
 g. Tabel `calculation_results`
 
-**Nama Tabel** : *calculation_results*  
-**Nama Database** : *penerimaan_security*  
-**Jumlah Field** : *9 field*  
-**Primary Key** : *id*  
+**Nama Tabel** : _calculation_results_  
+**Nama Database** : _penerimaan_security_  
+**Jumlah Field** : _9 field_  
+**Primary Key** : _id_  
 **Fungsi** : mengelola rekapitulasi hasil perangkingan & rekomendasi  
-**Format** : *SQL*  
+**Format** : _SQL_
 
 **TABEL: 4.7. Calculation_results**
 
-| No | Field Name | Data Type | Width | Keterangan |
-|---|---|---|---|---|
-| 1 | Id | Bigint | 20 | Primary Key |
-| 2 | Candidate_id | Bigint | 20 | Foreign Key (`candidates.id`) |
-| 3 | Smart_score | Float | - | Skor Indikator Kualifikasi ($0.0 - 1.0$) |
-| 4 | Swot_score | Float | - | Skor Potensi Profil ($0.0 - 1.0$) |
-| 5 | Final_score | Float | - | Skor Kelayakan Akhir ($0.70 \times Indikator + 0.30 \times Potensi$) |
-| 6 | Rank | Int | 11 | Peringkat pelamar |
-| 7 | Recommendation_status | Enum | - | Status rekomendasi keputusan (`Diterima`/`Pertimbangan`/`Ditolak`) |
-| 8 | Created_at | Timestamp | - | Waktu data dibuat |
-| 9 | Updated_at | Timestamp | - | Waktu data diperbarui |
+| No  | Field Name            | Data Type | Width | Keterangan                                                           |
+| --- | --------------------- | --------- | ----- | -------------------------------------------------------------------- |
+| 1   | Id                    | Bigint    | 20    | Primary Key                                                          |
+| 2   | Candidate_id          | Bigint    | 20    | Foreign Key (`candidates.id`)                                        |
+| 3   | Smart_score           | Float     | -     | Skor Indikator Kualifikasi ($0.0 - 1.0$)                             |
+| 4   | Swot_score            | Float     | -     | Skor Potensi Profil ($0.0 - 1.0$)                                    |
+| 5   | Final_score           | Float     | -     | Skor Kelayakan Akhir ($0.70 \times Indikator + 0.30 \times Potensi$) |
+| 6   | Rank                  | Int       | 11    | Peringkat pelamar                                                    |
+| 7   | Recommendation_status | Enum      | -     | Status rekomendasi keputusan (`Diterima`/`Pertimbangan`/`Ditolak`)   |
+| 8   | Created_at            | Timestamp | -     | Waktu data dibuat                                                    |
+| 9   | Updated_at            | Timestamp | -     | Waktu data diperbarui                                                |
 
 ---
 
@@ -524,6 +524,65 @@ Gunakan akun seeder berikut untuk melakukan pengujian sistem:
 | ----------------------- | ---------- | ------------- | ---------------------------------------------------------------- |
 | `admin@sentraniaga.com` | `password` | Administrator | Full Access (Kelola User, Data Pelamar, Evaluasi, Cetak Laporan) |
 | `hrd@sentraniaga.com`   | `password` | Tim HRD       | HR Access (Kelola Data Pelamar, Input Evaluasi, Cetak Laporan)   |
+
+## 🧪 Hasil Pengujian Sistem (Black Box Testing)
+
+a. Pengujian Login
+
+**TABEL: 4.8. Pengujian Login**
+
+| No  | Skenario Pengujian                                   | Hasil Pengujian                                                                          | Keterangan |
+| --- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------- |
+| 1   | Melakukan login dengan email dan password yang benar | Sistem menampilkan pesan "Login Berhasil" dan mengarahkan ke halaman Dashboard           | Valid      |
+| 2   | Melakukan login dengan email dan password yang salah | Sistem menampilkan pesan "Email atau Password Salah" dan pengguna tetap di halaman Login | Valid      |
+| 3   | Melakukan logout dari sistem                         | Sistem mengakhiri sesi pengguna dan mengarahkan kembali ke halaman Login                 | Valid      |
+
+---
+
+b. Pengujian Data Pelamar & Evaluasi (Candidates)
+
+**TABEL: 4.9. Pengujian Data Pelamar & Evaluasi**
+
+| No  | Skenario Pengujian                                                                       | Hasil Pengujian                                                                             | Keterangan |
+| --- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------- |
+| 1   | Melakukan input data pelamar baru dengan mengisi semua field wajib & indikator penilaian | Sistem menampilkan notifikasi "Data Pelamar Berhasil Ditambahkan" dan tersimpan di database | Valid      |
+| 2   | Melakukan input data pelamar dengan mengosongkan field wajib (seperti Nama / NIK)        | Sistem menampilkan notifikasi validasi error "Field wajib diisi" dan data gagal disimpan    | Valid      |
+| 3   | Melakukan update data pelamar dan nilai indikator penilaian                              | Sistem menampilkan pesan "Data Pelamar Berhasil Diperbarui" dan data ter-update             | Valid      |
+| 4   | Melakukan hapus data pelamar                                                             | Sistem menampilkan konfirmasi dialog hapus dan menghapus data dari database                 | Valid      |
+
+---
+
+c. Pengujian Evaluasi & Perangkingan Otomatis
+
+**TABEL: 4.10. Pengujian Evaluasi & Perangkingan**
+
+| No  | Skenario Pengujian                                                                  | Hasil Pengujian                                                                         | Keterangan |
+| --- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| 1   | Melakukan kalkulasi otomatis skor indikator kualifikasi dan potensi profil kandidat | Sistem secara otomatis menghitung skor akhir dan menentukan status kelayakan pelamar    | Valid      |
+| 2   | Menampilkan pemeringkatan (ranking) pelamar di Dashboard secara real-time           | Sistem menampilkan grafik urutan peringkat kandidat dari skor tertinggi hingga terendah | Valid      |
+
+---
+
+d. Pengujian Laporan Hasil Seleksi (HRD View)
+
+**TABEL: 4.11. Pengujian Data Laporan Hasil Seleksi**
+
+| No  | Skenario Pengujian                                                           | Hasil Pengujian                                                                               | Keterangan |
+| --- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ---------- |
+| 1   | Membuka halaman Laporan Hasil Seleksi sebagai HRD                            | Sistem menampilkan tabel rekapitulasi lengkap hasil evaluasi seluruh pelamar                  | Valid      |
+| 2   | Melakukan penyaringan (filter) laporan berdasarkan status kelayakan kandidat | Tabel laporan hanya menampilkan data kandidat sesuai dengan filter status yang dipilih        | Valid      |
+| 3   | Melakukan cetak laporan hasil seleksi (_Print View_)                         | Sistem menampilkan format halaman laporan cetak resmi yang siap di-print atau disimpan ke PDF | Valid      |
+
+---
+
+e. Pengujian Hak Akses Pengguna (Role-Based Access Control)
+
+**TABEL: 4.12. Pengujian Hak Akses Pengguna**
+
+| No  | Skenario Pengujian                       | Hasil Pengujian                                                                   | Keterangan |
+| --- | ---------------------------------------- | --------------------------------------------------------------------------------- | ---------- |
+| 1   | Login menggunakan akun Admin (POV Admin) | Sidebar hanya menampilkan menu Dashboard & Data Pelamar, menu Laporan di-hide     | Valid      |
+| 2   | Login menggunakan akun Tim HRD (POV HRD) | Sidebar menampilkan seluruh menu termasuk Laporan Hasil Seleksi dan Cetak Laporan | Valid      |
 
 ---
 

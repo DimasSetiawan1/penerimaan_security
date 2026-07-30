@@ -84,11 +84,13 @@
                         <span>Data Pelamar & Evaluasi</span>
                     </a>
 
+                    @if(Auth::user() && Auth::user()->role !== 'admin')
                     <a href="{{ route('reports.index') }}" 
                        class="flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 {{ request()->routeIs('reports.*') ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fa-solid fa-file-invoice w-6 text-base"></i>
                         <span>Laporan Hasil Seleksi</span>
                     </a>
+                    @endif
                 </nav>
             </div>
 
