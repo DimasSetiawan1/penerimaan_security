@@ -60,57 +60,72 @@ class SmartSwotService
                 $smartTotal += ($utility * $normalizedWeights[$crit->id]);
             }
 
-            // 3. Calculate SWOT Score & IFAS/EFAS
-            $swot = $candidate->swotEvaluation;
-            if (!$swot) {
-                $swot = SwotEvaluation::create([
-                    'candidate_id' => $candidate->id,
-                    'strengths_score' => 3.0,
-                    'weaknesses_score' => 2.0,
-                    'opportunities_score' => 4.0,
-                    'threats_score' => 2.0,
-                    'ifas_score' => 1.0,
-                    'efas_score' => 2.0,
-                    'quadrant' => 'SO',
-                    'strategy_recommendation' => 'Strategi SO: Memanfaatkan Kekuatan Diri secara Maksimal.',
-                ]);
+            // 3. Automatically Calculate SWOT Scores from Sub-Criteria Scores (C1 - C4)
+            $c1Val = 1; $c2Val = 1; $c3Val = 1; $c4Val = 1;
+            foreach ($criterias as $crit) {
+                $scoreModel = $candidate->scores->firstWhere('criteria_id', $crit->id);
+                $rawScore = $scoreModel ? $scoreModel->score_val : 1;
+                if ($crit->code === 'C1') $c1Val = $rawScore;
+                elseif ($crit->code === 'C2') $c2Val = $rawScore;
+                elseif ($crit->code === 'C3') $c3Val = $rawScore;
+                elseif ($crit->code === 'C4') $c4Val = $rawScore;
             }
 
-            $S = $swot->strengths_score;
-            $W = $swot->weaknesses_score;
-            $O = $swot->opportunities_score;
-            $T = $swot->threats_score;
+            // Derive S, W, O, T from sub-criteria
+            $S = round(($c1Val + $c2Val + $c3Val) / 3, 2);
+            $W = round(6 - $S, 2);
+            $O = round((float) $c4Val, 2);
+            $T = round(6 - (float) $c4Val, 2);
 
             $ifas = $S - $W;
             $efas = $O - $T;
 
-            // Quadrant & Strategy
+            // Professional Profile Qualification & Strategy Recommendation
             if ($ifas >= 0 && $efas >= 0) {
                 $quadrant = 'SO';
-                $strategy = 'Strategi SO (Agresif): Kandidat sangat berpotensi. Manfaatkan kekuatan integritas & fisik untuk meraih peluang operasional.';
+                $strategy = 'Kualifikasi Sangat Layak: Memiliki integritas tinggi, fisik prima, serta tingkat fleksibilitas operasional yang sangat baik.';
             } elseif ($ifas >= 0 && $efas < 0) {
                 $quadrant = 'ST';
-                $strategy = 'Strategi ST (Diversifikasi): Kandidat tangguh. Gunakan kekuatan fisik & pengalaman untuk meminimalkan ancaman tugas.';
+                $strategy = 'Kualifikasi Layak: Memiliki fisik & pengalaman yang baik, siap mengantisipasi tantangan tugas lapangan.';
             } elseif ($ifas < 0 && $efas >= 0) {
                 $quadrant = 'WO';
-                $strategy = 'Strategi WO (Turnaround): Berikan pelatihan tambahan untuk memperbaiki kelemahan sambil memanfaatkan peluang yang ada.';
+                $strategy = 'Kualifikasi Pertimbangan: Memerlukan pelatihan tambahan untuk meningkatkan kompetensi fisik & kedisiplinan.';
             } else {
                 $quadrant = 'WT';
-                $strategy = 'Strategi WT (Defensif): Kandidat berisiko tinggi. Perlu pertimbangan ulang atau eliminasi.';
+                $strategy = 'Kualifikasi Tidak Layak: Profil kandidat belum memenuhi standar kualifikasi & fleksibilitas kerja minimal.';
             }
 
-            // Update SWOT model
-            $swot->update([
-                'ifas_score' => round($ifas, 2),
-                'efas_score' => round($efas, 2),
-                'quadrant' => $quadrant,
-                'strategy_recommendation' => $strategy,
-            ]);
+            // Create or update SWOT model
+            $swot = $candidate->swotEvaluation;
+            if (!$swot) {
+                $swot = SwotEvaluation::create([
+                    'candidate_id' => $candidate->id,
+                    'strengths_score' => $S,
+                    'weaknesses_score' => $W,
+                    'opportunities_score' => $O,
+                    'threats_score' => $T,
+                    'ifas_score' => round($ifas, 2),
+                    'efas_score' => round($efas, 2),
+                    'quadrant' => $quadrant,
+                    'strategy_recommendation' => $strategy,
+                ]);
+            } else {
+                $swot->update([
+                    'strengths_score' => $S,
+                    'weaknesses_score' => $W,
+                    'opportunities_score' => $O,
+                    'threats_score' => $T,
+                    'ifas_score' => round($ifas, 2),
+                    'efas_score' => round($efas, 2),
+                    'quadrant' => $quadrant,
+                    'strategy_recommendation' => $strategy,
+                ]);
+            }
 
             // SWOT Score Normalized (0 - 1)
             $swotNormalized = (($S + $O) + (5 - $W) + (5 - $T)) / 20;
 
-            // 4. Combined Final Score (70% SMART + 30% SWOT)
+            // 4. Combined Final Score (70% Bobot Kriteria + 30% Bobot Evaluasi Potensi)
             $finalScore = (0.70 * $smartTotal) + (0.30 * $swotNormalized);
 
             $results[] = [

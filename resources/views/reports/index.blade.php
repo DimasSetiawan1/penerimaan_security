@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Laporan Hasil Keputusan - Sentra Niaga Bekasi')
-@section('header_title', 'Laporan Rekapitulasi Penerimaan Security')
+@section('title', 'Laporan Hasil Seleksi - Sentra Niaga Bekasi')
+@section('header_title', 'Laporan Rekapitulasi Seleksi Security')
 
 @section('content')
 <div class="space-y-8">
@@ -9,7 +9,7 @@
     <!-- Top Action Card & Status Filter -->
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-            <h1 class="text-xl font-extrabold text-slate-800">Laporan Rekapitulasi Keputusan Penilaian</h1>
+            <h1 class="text-xl font-extrabold text-slate-800">Laporan Rekapitulasi Seleksi Penilaian</h1>
             <p class="text-xs text-slate-500 mt-1">Hasil rekomendasi penerimaan security Perkantoran Sentra Niaga Bekasi</p>
         </div>
 
@@ -47,23 +47,23 @@
                 </div>
             </div>
             <h3 class="text-base font-extrabold text-slate-800 uppercase tracking-wide mt-4">LEMBAR REKAPITULASI SELEKSI PENERIMAAN ANGGOTA SECURITY</h3>
-            <p class="text-xs text-slate-500 font-semibold">Metode Simple Multi Attribute Rating Technique (SMART) & Analisis SWOT</p>
+            <p class="text-xs text-slate-500 font-semibold">Sistem Evaluasi Terstruktur & Rekomendasi Kelayakan Security</p>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-700">
+        <div class="overflow-x-auto w-full">
+            <table class="w-full text-left text-sm text-slate-700 border-collapse">
                 <thead class="bg-slate-100 text-slate-700 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200">
                     <tr>
-                        <th class="px-6 py-4 text-center">Rank</th>
-                        <th class="px-6 py-4">Nama & NIK Pelamar</th>
-                        <th class="px-6 py-4 text-center">Integritas (C1)</th>
-                        <th class="px-6 py-4 text-center">Kesehatan (C2)</th>
-                        <th class="px-6 py-4 text-center">Pengalaman (C3)</th>
-                        <th class="px-6 py-4 text-center">Shift (C4)</th>
-                        <th class="px-6 py-4 text-center">Skor SMART</th>
-                        <th class="px-6 py-4 text-center">Skor SWOT</th>
-                        <th class="px-6 py-4 text-center">Skor Akhir</th>
-                        <th class="px-6 py-4 text-center">Hasil Keputusan</th>
+                        <th class="px-5 py-4 text-center whitespace-nowrap">Rank</th>
+                        <th class="px-5 py-4 whitespace-nowrap">Nama & NIK Pelamar</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Integritas</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Kesehatan Fisik</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Pengalaman Kerja</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Kesiapan Shift</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Skor Indikator</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Skor Potensi</th>
+                        <th class="px-4 py-4 text-center whitespace-nowrap">Skor Akhir (%)</th>
+                        <th class="px-5 py-4 text-center whitespace-nowrap">Hasil Keputusan</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-200">
@@ -72,33 +72,33 @@
                         $scores = $res->candidate->scores->keyBy('criteria_id');
                     @endphp
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 text-center font-black text-slate-900 text-base">
+                        <td class="px-5 py-4 text-center font-black text-slate-900 text-base whitespace-nowrap">
                             #{{ $res->rank }}
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="font-extrabold text-slate-900">{{ $res->candidate->name }}</div>
-                            <div class="text-xs text-slate-500 font-mono">{{ $res->candidate->code }} • NIK: {{ $res->candidate->nik ?? '-' }}</div>
+                        <td class="px-5 py-4 whitespace-nowrap">
+                            <div class="font-extrabold text-slate-900 whitespace-nowrap">{{ $res->candidate->name }}</div>
+                            <div class="text-xs text-slate-500 font-mono whitespace-nowrap">{{ $res->candidate->code }} • NIK: {{ $res->candidate->nik ?? '-' }}</div>
                         </td>
-                        <td class="px-6 py-4 text-center font-bold">{{ $scores->get(1)->score_val ?? '-' }}</td>
-                        <td class="px-6 py-4 text-center font-bold">{{ $scores->get(2)->score_val ?? '-' }}</td>
-                        <td class="px-6 py-4 text-center font-bold">{{ $scores->get(3)->score_val ?? '-' }}</td>
-                        <td class="px-6 py-4 text-center font-bold">{{ $scores->get(4)->score_val ?? '-' }}</td>
-                        <td class="px-6 py-4 text-center font-mono font-bold">{{ round($res->smart_score * 100, 1) }}%</td>
-                        <td class="px-6 py-4 text-center font-mono font-bold">{{ round($res->swot_score * 100, 1) }}%</td>
-                        <td class="px-6 py-4 text-center font-mono font-black text-sky-700 text-base">
+                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(1)->score_val ?? '-' }}</td>
+                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(2)->score_val ?? '-' }}</td>
+                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(3)->score_val ?? '-' }}</td>
+                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(4)->score_val ?? '-' }}</td>
+                        <td class="px-4 py-4 text-center font-mono font-bold whitespace-nowrap">{{ round($res->smart_score * 100, 1) }}%</td>
+                        <td class="px-4 py-4 text-center font-mono font-bold whitespace-nowrap">{{ round($res->swot_score * 100, 1) }}%</td>
+                        <td class="px-4 py-4 text-center font-mono font-black text-sky-700 text-base whitespace-nowrap">
                             {{ round($res->final_score * 100, 2) }}%
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-5 py-4 text-center whitespace-nowrap">
                             @if($res->recommendation_status == 'Diterima')
-                                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
                                     DITERIMA
                                 </span>
                             @elseif($res->recommendation_status == 'Pertimbangan')
-                                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-900 border border-amber-300">
+                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-900 border border-amber-300">
                                     PERTIMBANGAN
                                 </span>
                             @else
-                                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-rose-100 text-rose-900 border border-rose-300">
+                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-xs font-extrabold bg-rose-100 text-rose-900 border border-rose-300">
                                     DITOLAK
                                 </span>
                             @endif

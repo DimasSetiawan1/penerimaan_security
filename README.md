@@ -1,18 +1,19 @@
-# 🛡️ Sistem Pendukung Keputusan (SPK) Penerimaan Security (SMART + SWOT)
+# 🛡️ Sistem Penilaian & Seleksi Penerimaan Pelamar Security (Sentra Niaga Bekasi)
 
-Sistem Pendukung Keputusan (SPK) Seleksi & Penerimaan Anggota Keamanan (Security) berbasis Web menggunakan hibridisasi metode **SMART (Simple Multi-Attribute Rating Technique)** dan evaluasi **SWOT (Strengths, Weaknesses, Opportunities, Threats)**.
+Sistem Seleksi & Evaluasi Pelamar Security berbasis Web yang dirancang secara profesional untuk membantu tim **HRD (Human Resource Department)** dan **Manajemen Operasional PT Sentra Niaga Bekasi** dalam melakukan seleksi penerimaan petugas security secara obyektif, terukur, transparan, terstruktur, serta bebas bias kualitatif.
 
-Aplikasi ini dirancang untuk membantu tim **HRD (Human Resource Department)** dan **Manajemen Operasional** dalam melakukan seleksi penerimaan petugas security secara obyektif, terukur, transparan, terstruktur, serta minim bias kualitatif.
+Aplikasi ini mengintegrasikan pembobotan kriteria terstandarisasi dengan analisis profil kualifikasi pelamar secara otomatis.
 
 ---
 
 ## 📌 Daftar Isi
+
 - [🚀 Fitur Utama & Modul Sistem](#-fitur-utama--modul-sistem)
 - [🛠️ Tech Stack & Arsitektur](#️-tech-stack--arsitektur)
 - [📁 Struktur Direktori Proyek](#-struktur-direktori-proyek)
-- [🧮 Metodologi Perhitungan SPK (SMART + SWOT)](#-metodologi-perhitungan-spk-smart--swot)
+- [🧮 Metodologi Perhitungan & Evaluasi Kelayakan](#-metodologi-perhitungan--evaluasi-kelayakan)
 - [📊 Skema Basis Data & Relasi Tabel (ERD)](#-skema-basis-data--relasi-tabel-erd)
-- [📋 Master Data Kriteria & Sub-Kriteria Default](#-master-data-kriteria--sub-kriteria-default)
+- [📋 Master Data Kriteria & Indikator Penilaian Default](#-master-data-kriteria--indikator-penilaian-default)
 - [⚙️ Panduan Instalasi & Memulai](#️-panduan-instalasi--memulai)
 - [🔑 Akun Pengguna Default (Seeder)](#-akun-pengguna-default-seeder)
 
@@ -21,44 +22,43 @@ Aplikasi ini dirancang untuk membantu tim **HRD (Human Resource Department)** da
 ## 🚀 Fitur Utama & Modul Sistem
 
 1. **🔐 Authentication & Multi-Role Support**:
-   - Autentikasi aman bagi Pengguna Admin dan HRD.
-   - Sesi terlindungi middleware Laravel (`auth`).
+    - Autentikasi aman bagi Pengguna Admin dan Tim HRD.
+    - Sesi terlindungi middleware Laravel (`auth`).
 
-2. **📊 Dashboard Analytics (`/dashboard`)**:
-   - Ringkasan statistik kandidat pelamar security.
-   - Indikator status penerimaan (**Diterima**, **Pertimbangan**, **Ditolak**).
-   - Visualisasi distribusi kuadran evaluasi SWOT kandidat.
+2. **📊 Dashboard Overview & Statistik (`/dashboard`)**:
+    - Ringkasan statistik kandidat pelamar security.
+    - Indikator status rekomendasi kelayakan (**Diterima**, **Pertimbangan**, **Ditolak**).
+    - Visualisasi grafik peringkat pelamar dan distribusi kategori kualifikasi.
 
-3. **⚙️ Manajemen Kriteria & Sub-Kriteria (`/criteria`)**:
-   - Pengaturan bobot kriteria ($W_j$) secara dinamis.
-   - Deskripsi indikator sub-kriteria penilaian skala Likert (skala 1–5).
+3. **📋 Standar Indikator Penilaian (`/criteria`)**:
+    - Tampilan kriteria penilaian terstandarisasi yang ditetapkan oleh perusahaan (_Fixed Database Standard_).
+    - Penjelasan indikator penilaian pada skala 1–5 untuk menjaga konsistensi evaluasi.
 
-4. **👤 Manajemen Pelamar / Kandidat (`/candidates`)**:
-   - CRUD data calon anggota security (Kode Pelamar auto-generate `K01`, `K02`, NIK, Nama, Gender, No HP, Alamat).
-   - Input nilai kriteria (skala 1–5).
-   - Input skor kuantitatif komponen SWOT ($S, W, O, T$).
+4. **👤 Data Pelamar & Evaluasi Integrated (`/candidates`)**:
+    - Formulir input satu pintu (_Single Unified Form_) yang menggabungkan biodata pelamar (Kode Pelamar auto-generate `K01`, `K02`, NIK, Nama, Gender, Phone, Alamat) dan pilihan indikator kualifikasi.
+    - Penilaian potensi dan profil dikalkulasi secara otomatis oleh sistem dari pilihan indikator tanpa perlu input manual terpisah.
 
-5. **🧮 Matriks Perhitungan SPK Transparan (`/calculation`)**:
-   - Menampilkan detail matematis alur perhitungan step-by-step:
-     - Normalisasi Bobot Kriteria ($w_j$).
-     - Matriks Nilai Utilitas SMART ($u_i$).
-     - Perhitungan Skor Matriks SWOT (IFAS & EFAS).
-     - Pembobotan Kombinasi (**70% SMART + 30% SWOT**).
-     - Hasil perangkingan otomatis (*Automatic Ranking*).
+5. **🧮 Detail & Matriks Evaluasi (`/calculation`)**:
+    - Menampilkan detail matriks kalkulasi step-by-step secara transparan:
+        - Pembobotan Kriteria Penilaian Ter-normalisasi.
+        - Transformasi Skala Penilaian Indikator.
+        - Analisis Profil & Adaptabilitas (Faktor Internal & Eksternal).
+        - Visualisasi Peta Matriks Kualifikasi Pelamar.
+        - Hasil Perangkingan & Evaluasi Akhir (70% Kriteria + 30% Analisis Potensi).
 
 6. **📄 Laporan & Cetak Dokumen (`/reports` & `/reports/print`)**:
-   - Rekapitulasi peringkat & rekomendasi keputusan akhir.
-   - Halaman cetak laporan resmi (*Print Friendly layout*) untuk pengesahan Manajemen.
+    - Rekapitulasi peringkat dan rekomendasi keputusan akhir penerimaan.
+    - Halaman cetak laporan resmi berformat Kop Surat resmi untuk pengesahan Manajemen.
 
 ---
 
 ## 🛠️ Tech Stack & Arsitektur
 
-* **Framework Backend**: [Laravel 11.x](https://laravel.com) (PHP >= 8.2)
-* **Frontend & UI Styling**: Laravel Blade Templates, TailwindCSS, Vite Assets Bundler
-* **Icons & UI Utilities**: FontAwesome / Heroicons
-* **Database Engine**: MySQL / MariaDB / SQLite
-* **Design Pattern**: Model-View-Controller (MVC) & Service Layer Pattern ([`SmartSwotService.php`](app/Services/SmartSwotService.php))
+- **Framework Backend**: [Laravel 11.x](https://laravel.com) (PHP >= 8.2)
+- **Frontend & UI Styling**: Laravel Blade Templates, TailwindCSS, Vite Assets Bundler
+- **Icons & UI Utilities**: FontAwesome 6, Chart.js, Alpine.js
+- **Database Engine**: MySQL / MariaDB / SQLite
+- **Design Pattern**: Model-View-Controller (MVC) & Service Layer Pattern ([`SmartSwotService.php`](app/Services/SmartSwotService.php))
 
 ---
 
@@ -70,34 +70,34 @@ penerimaan_security/
 │   ├── Http/
 │   │   ├── Controllers/
 │   │   │   ├── AuthController.php          # Handlers Login & Logout
-│   │   │   ├── CalculationController.php   # Handlers Tampilan Perhitungan Transparan
-│   │   │   ├── CandidateController.php     # CRUD Kandidat & Skor
-│   │   │   ├── CriteriaController.php      # Pengaturan Bobot & Sub-Kriteria
+│   │   │   ├── CalculationController.php   # Handlers Detail & Matriks Evaluasi
+│   │   │   ├── CandidateController.php     # Handlers Input Data Pelamar & Evaluasi
+│   │   │   ├── CriteriaController.php      # Display Standar Indikator Penilaian
 │   │   │   ├── DashboardController.php     # Analytics & Ringkasan Dashboard
 │   │   │   └── ReportController.php        # Handlers Rekap & Print Laporan
 │   │   └── Middleware/
 │   ├── Models/
 │   │   ├── CalculationResult.php          # Model Rekap Perangkingan
 │   │   ├── Candidate.php                  # Model Data Pelamar
-│   │   ├── CandidateScore.php             # Model Skor Kriteria Candidate
+│   │   ├── CandidateScore.php             # Model Skor Indikator Candidate
 │   │   ├── Criteria.php                   # Model Kriteria Penilaian
 │   │   ├── SubCriteria.php                # Model Indikator Skala 1-5
-│   │   ├── SwotEvaluation.php             # Model Nilai SWOT & Kuadran
+│   │   ├── SwotEvaluation.php             # Model Evaluasi Profil & Adaptabilitas
 │   │   └── User.php                       # Model Pengguna System
 │   └── Services/
-│       └── SmartSwotService.php           # Core Engine Perhitungan SMART + SWOT
+│       └── SmartSwotService.php           # Service Engine Calculation Engine
 ├── config/                                # Konfigurasi Framework Laravel
 ├── database/
 │   ├── migrations/                        # Skema Tabel Basis Data
 │   └── seeders/
-│       └── DatabaseSeeder.php             # Initial Dummy Data & Default Criteria
+│       └── DatabaseSeeder.php             # Master Data & Initial Default User/Criteria
 ├── public/                                # Web Root / Compiled Assets
 ├── resources/
 │   ├── views/                             # Template Tampilan (Blade)
 │   │   ├── auth/                          # Tampilan Login
-│   │   ├── calculation/                   # Tampilan Detail Perhitungan SMART-SWOT
-│   │   ├── candidates/                    # Tampilan CRUD & Form Candidate
-│   │   ├── criteria/                      # Tampilan Pengaturan Kriteria
+│   │   ├── calculation/                   # Tampilan Detail & Matriks Evaluasi
+│   │   ├── candidates/                    # Tampilan Form & Data Pelamar
+│   │   ├── criteria/                      # Tampilan Standar Indikator Penilaian
 │   │   ├── reports/                       # Tampilan Rekap & Print Laporan
 │   │   ├── dashboard.blade.php            # Tampilan Dashboard Utama
 │   │   └── layouts/                       # Main Master Layout & Navigation
@@ -109,53 +109,51 @@ penerimaan_security/
 
 ---
 
-## 🧮 Metodologi Perhitungan SPK (SMART + SWOT)
+## 🧮 Metodologi Perhitungan & Evaluasi Kelayakan
 
-Perhitungan rekomendasi kandidat dieksekusi secara terotomatisasi oleh service [`SmartSwotService`](app/Services/SmartSwotService.php) dengan alur matematis sebagai berikut:
+Kalkulasi rekomendasi kelayakan pelamar dieksekusi secara terotomatisasi oleh service [`SmartSwotService`](app/Services/SmartSwotService.php) dengan alur matematis sebagai berikut:
 
-### 1. Perhitungan Metode SMART (Bobot Pengaruh: 70%)
-* **Normalisasi Bobot Kriteria ($w_j$)**:
+### 1. Evaluasi Bobot Indikator Penilaian (Bobot Pengaruh: 70%)
+
+- **Normalisasi Bobot Kriteria ($w_j$)**:
   $$w_j = \frac{W_j}{\sum_{k=1}^{n} W_k}$$
-  *Keterangan: $W_j$ adalah bobot asli kriteria ke-$j$.*
+  _Keterangan: $W_j$ adalah bobot asli kriteria ke-$j$._
 
-* **Nilai Utilitas SMART ($u_i$)**:
-  - Untuk Kriteria Tipe **Benefit**:
-    $$u_i = \frac{C_i - C_{min}}{C_{max} - C_{min}}$$
-  - Untuk Kriteria Tipe **Cost**:
-    $$u_i = \frac{C_{max} - C_i}{C_{max} - C_{min}}$$
-  *Keterangan: $C_i$ adalah skor mentah kandidat, $C_{min}=1$, $C_{max}=5$.*
+- **Nilai Skala Utilitas Ter-normalisasi ($u_i$)**:
+    - Untuk Kriteria Tipe **Benefit**:
+      $$u_i = \frac{C_i - C_{min}}{C_{max} - C_{min}}$$
+      _Keterangan: $C_i$ adalah skor pilihan indikator pelamar, $C_{min}=1$, $C_{max}=5$.\_
 
-* **Total Skor SMART ($Skor_{SMART}$)**:
-  $$Skor_{SMART} = \sum_{j=1}^{n} (u_j \times w_j)$$
+- **Total Skor Indikator ($Skor_{Indikator}$)**:
+  $$Skor_{Indikator} = \sum_{j=1}^{n} (u_j \times w_j)$$
 
 ---
 
-### 2. Perhitungan Evaluasi SWOT (Bobot Pengaruh: 30%)
-* **Skor Faktor Internal (IFAS)**: 
-  $$\text{IFAS} = S - W$$
-* **Skor Faktor Eksternal (EFAS)**: 
-  $$\text{EFAS} = O - T$$
+### 2. Evaluasi Profil & Adaptabilitas Otomatis (Bobot Pengaruh: 30%)
 
-* **Pemetaan Kuadran Matrix SWOT & Strategi**:
-  - **Kuadran SO (Agresif)** ($\text{IFAS} \ge 0, \text{EFAS} \ge 0$): Candidate Sangat Berpotensi.
-  - **Kuadran ST (Diversifikasi)** ($\text{IFAS} \ge 0, \text{EFAS} < 0$): Candidate Tangguh & Berpengalaman.
-  - **Kuadran WO (Turnaround)** ($\text{IFAS} < 0, \text{EFAS} \ge 0$): Candidate Memerlukan Pelatihan Khusus.
-  - **Kuadran WT (Defensif)** ($\text{IFAS} < 0, \text{EFAS} < 0$): Candidate Berisiko Tinggi.
+Nilai evaluasi potensi dikalkulasi secara **otomatis dari pilihan sub-kriteria pelamar (C1–C4)**:
 
-* **Normalisasi Skor SWOT (Skala 0 s/d 1)**:
-  $$Skor_{SWOT} = \frac{(S + O) + (5 - W) + (5 - T)}{20}$$
+- **Faktor Kekuatan (Strengths / $S$)**: Rata-rata kriteria integritas, kesehatan fisik, dan pengalaman kerja ($S = \frac{C1 + C2 + C3}{3}$).
+- **Faktor Kelemahan (Weaknesses / $W$)**: Inverse kelemahan ($W = 6 - S$).
+- **Faktor Peluang (Opportunities / $O$)**: Kesiapan shift & adaptabilitas kerja ($O = C4$).
+- **Faktor Ancaman (Threats / $T$)**: Inverse ancaman ($T = 6 - C4$).
+
+- **Perhitungan Skor Ter-normalisasi Potensi**:
+  $$Skor_{Potensi} = \frac{(S + O) + (5 - W) + (5 - T)}{20}$$
 
 ---
 
-### 3. Combination Score (Skor Akhir Keputusan)
-$$Final\_Score = (0.70 \times Skor_{SMART}) + (0.30 \times Skor_{SWOT})$$
+### 3. Perhitungan Skor Akhir Kelayakan
+
+$$Skor_{Akhir} = (0.70 \times Skor_{Indikator}) + (0.30 \times Skor_{Potensi})$$
 
 ---
 
 ### 4. Matriks Keputusan Rekomendasi Penerimaan
-* **Persentase Final Score $\ge 75\%$**: **Diterima** (Rekomendasi Utama)
-* **Persentase Final Score $55\% - 74\%$**: **Pertimbangan** (Cadangan / Wawancara Lanjutan)
-* **Persentase Final Score $< 55\%$**: **Ditolak** (Tidak Memenuhi Standar Minimal)
+
+- **Skor Akhir Kelayakan $\ge 75\%$**: **Diterima** (Rekomendasi Utama)
+- **Skor Akhir Kelayakan $55\% - 74\%$**: **Pertimbangan** (Cadangan / Wawancara Lanjutan)
+- **Skor Akhir Kelayakan $< 55\%$**: **Ditolak** (Belum Memenuhi Standar Minimal)
 
 ---
 
@@ -249,223 +247,269 @@ erDiagram
     criterias ||--o{ sub_criterias : "memiliki (1:N)"
     criterias ||--o{ candidate_scores : "dinilai pada (1:N)"
     candidates ||--o{ candidate_scores : "memiliki nilai (1:N)"
-    candidates ||--|| swot_evaluations : "dianalisis SWOT (1:1)"
+    candidates ||--|| swot_evaluations : "dianalisis profil (1:1)"
     candidates ||--|| calculation_results : "menghasilkan (1:1)"
 ```
 
 ### 📌 Penjelasan Kardinalitas Relasi Antar Tabel:
-1. **`criterias` → `sub_criterias` ($1 : N$)**: Satu kriteria memiliki banyak indikator sub-kriteria (skala Likert 1–5).
-2. **`criterias` → `candidate_scores` ($1 : N$)**: Satu kriteria dipetakan ke banyak transaksi penilaian kandidat.
-3. **`candidates` → `candidate_scores` ($1 : N$)**: Satu kandidat memiliki 4 record penilaian kriteria (C1–C4).
-4. **`candidates` → `swot_evaluations` ($1 : 1$)**: Satu kandidat memiliki tepat 1 record evaluasi kuadrat SWOT (S, W, O, T, IFAS, EFAS).
-5. **`candidates` → `calculation_results` ($1 : 1$)**: Satu kandidat menghasilkan 1 record rekapitulasi nilai akhir, peringkat, dan status keputusan penerimaan.
+
+1. **`criterias` → `sub_criterias` ($1 : N$)**: Satu kriteria memiliki 5 indikator sub-kriteria (skala Likert 1–5).
+2. **`criterias` → `candidate_scores` ($1 : N$)**: Satu kriteria dipetakan ke transaksi penilaian pelamar.
+3. **`candidates` → `candidate_scores` ($1 : N$)**: Satu pelamar memiliki 4 record pilihan indikator kriteria (C1–C4).
+4. **`candidates` → `swot_evaluations` ($1 : 1$)**: Satu pelamar memiliki 1 record evaluasi profil potensi yang ter-generate otomatis.
+5. **`candidates` → `calculation_results` ($1 : 1$)**: Satu pelamar menghasilkan 1 record rekapitulasi nilai akhir, peringkat, dan status keputusan penerimaan.
 6. **`users`**: Tabel independen untuk sistem autentikasi dan manajemen hak akses (Admin & HRD).
 
 ---
 
 ### 2. Kamus Data & Spesifikasi Tabel (Database Data Dictionary)
 
-#### Tabel 1: `users`
-* **Nama Tabel**: `users`
-* **Fungsi**: Menyimpan data akun pengguna sistem (Pengelola/Admin dan Tim HRD) untuk autentikasi dan hak akses.
-* **Primary Key**: `id`
+a. Tabel `users`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *users*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *9 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola data akun pengguna sistem (Admin & HRD)  
+**Format** : *SQL*  
+
+**TABEL: 4.1. Users**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik pengguna |
-| 2 | `name` | `VARCHAR(255)` | `Not Null` | Nama lengkap pengguna sistem |
-| 3 | `email` | `VARCHAR(255)` | `Unique`, `Not Null` | Alamat email (digunakan untuk login) |
-| 4 | `email_verified_at` | `TIMESTAMP` | `Nullable` | Waktu verifikasi email pengguna |
-| 5 | `password` | `VARCHAR(255)` | `Not Null` | Kata sandi terenkripsi (Hash) |
-| 6 | `role` | `VARCHAR(255)` | `Default: 'admin'` | Hak akses pengguna (`admin` / `hrd`) |
-| 7 | `remember_token` | `VARCHAR(100)` | `Nullable` | Token sesi "remember me" |
-| 8 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 9 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Name | Varchar | 255 | Nama lengkap pengguna |
+| 3 | Email | Varchar | 255 | Alamat email (login) |
+| 4 | Email_verified_at | Timestamp | - | Waktu verifikasi email |
+| 5 | Password | Varchar | 255 | Kata sandi terenkripsi (Hash) |
+| 6 | Role | Varchar | 255 | Hak akses (`admin` / `hrd`) |
+| 7 | Remember_token | Varchar | 100 | Token sesi "remember me" |
+| 8 | Created_at | Timestamp | - | Waktu data dibuat |
+| 9 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-#### Tabel 2: `criterias`
-* **Nama Tabel**: `criterias`
-* **Fungsi**: Menyimpan data master kriteria penilaian seleksi beserta bobot awal ($W_j$) dan jenis kriteria.
-* **Primary Key**: `id`
+b. Tabel `criterias`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *criterias*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *9 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola data master kriteria penilaian terstandarisasi  
+**Format** : *SQL*  
+
+**TABEL: 4.2. Criterias**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik kriteria |
-| 2 | `code` | `VARCHAR(255)` | `Unique`, `Not Null` | Kode kriteria penilaian (misal: C1, C2, C3, C4) |
-| 3 | `name` | `VARCHAR(255)` | `Not Null` | Nama kriteria (Integritas, Kesehatan Fisik, dll) |
-| 4 | `type` | `ENUM('benefit', 'cost')` | `Default: 'benefit'` | Sifat kriteria (`benefit` / `cost`) |
-| 5 | `weight` | `FLOAT` | `Not Null` | Nilai bobot kriteria ($W_j$) dalam % |
-| 6 | `min_val` | `FLOAT` | `Default: 1.0` | Nilai minimum indikator kriteria ($C_{min}$) |
-| 7 | `max_val` | `FLOAT` | `Default: 5.0` | Nilai maksimum indikator kriteria ($C_{max}$) |
-| 8 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 9 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Code | Varchar | 255 | Kode kriteria (C1, C2, C3, C4) |
+| 3 | Name | Varchar | 255 | Nama kriteria penilaian |
+| 4 | Type | Enum | - | Sifat kriteria (`benefit` / `cost`) |
+| 5 | Weight | Float | - | Nilai bobot kriteria ($W_j$) dalam % |
+| 6 | Min_val | Float | - | Nilai minimum indikator ($C_{min}$) |
+| 7 | Max_val | Float | - | Nilai maksimum indikator ($C_{max}$) |
+| 8 | Created_at | Timestamp | - | Waktu data dibuat |
+| 9 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-#### Tabel 3: `sub_criterias`
-* **Nama Tabel**: `sub_criterias`
-* **Fungsi**: Menyimpan parameter indikator skala nilai 1 s/d 5 untuk setiap kriteria penilaian.
-* **Primary Key**: `id`
-* **Foreign Key**: `criteria_id` (relasi ke `criterias.id`)
+c. Tabel `sub_criterias`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *sub_criterias*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *6 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola parameter indikator skala nilai 1 s/d 5 kriteria  
+**Format** : *SQL*  
+
+**TABEL: 4.3. Sub_criterias**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik sub-kriteria |
-| 2 | `criteria_id` | `BIGINT` | `FK`, `On Delete Cascade` | Relasi ke ID Kriteria (`criterias.id`) |
-| 3 | `value` | `INT` | `Not Null` | Skala nilai indikator (1, 2, 3, 4, atau 5) |
-| 4 | `description` | `TEXT` | `Not Null` | Deskripsi kualitatif indikator penilaian |
-| 5 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 6 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Criteria_id | Bigint | 20 | Foreign Key (`criterias.id`) |
+| 3 | Value | Int | 11 | Skala nilai indikator (1, 2, 3, 4, 5) |
+| 4 | Description | Text | - | Deskripsi kualitatif indikator |
+| 5 | Created_at | Timestamp | - | Waktu data dibuat |
+| 6 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-#### Tabel 4: `candidates`
-* **Nama Tabel**: `candidates`
-* **Fungsi**: Menyimpan biodata lengkap kandidat/pelamar anggota security.
-* **Primary Key**: `id`
+d. Tabel `candidates`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *candidates*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *10 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola biodata lengkap pelamar anggota security  
+**Format** : *SQL*  
+
+**TABEL: 4.4. Candidates**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik pelamar/kandidat |
-| 2 | `code` | `VARCHAR(255)` | `Unique`, `Not Null` | Kode unik kandidat (misal: K01, K02, dst) |
-| 3 | `nik` | `VARCHAR(255)` | `Nullable` | Nomor Induk Kependudukan (NIK) pelamar |
-| 4 | `name` | `VARCHAR(255)` | `Not Null` | Nama lengkap pelamar |
-| 5 | `gender` | `ENUM('L', 'P')` | `Default: 'L'` | Jenis kelamin (`L` = Laki-laki, `P` = Perempuan) |
-| 6 | `phone` | `VARCHAR(255)` | `Nullable` | Nomor telepon / WhatsApp pelamar |
-| 7 | `address` | `TEXT` | `Nullable` | Alamat domisili pelamar |
-| 8 | `status` | `ENUM('Draft', 'Evaluated')` | `Default: 'Draft'` | Status evaluasi kandidat |
-| 9 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 10 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Code | Varchar | 255 | Kode unik pelamar (K01, K02, dst) |
+| 3 | Nik | Varchar | 255 | NIK pelamar |
+| 4 | Name | Varchar | 255 | Nama lengkap pelamar |
+| 5 | Gender | Enum | - | Jenis kelamin (`L` / `P`) |
+| 6 | Phone | Varchar | 255 | Nomor HP / WhatsApp |
+| 7 | Address | Text | - | Alamat domisili |
+| 8 | Status | Enum | - | Status evaluasi (`Draft` / `Evaluated`) |
+| 9 | Created_at | Timestamp | - | Waktu data dibuat |
+| 10 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-#### Tabel 5: `candidate_scores`
-* **Nama Tabel**: `candidate_scores`
-* **Fungsi**: Menyimpan skor mentah kriteria (skala 1–5) yang diperoleh oleh setiap kandidat.
-* **Primary Key**: `id`
-* **Foreign Keys**: `candidate_id` (relasi ke `candidates.id`), `criteria_id` (relasi ke `criterias.id`)
+e. Tabel `candidate_scores`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *candidate_scores*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *6 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola skor indikator (skala 1–5) pilihan pelamar  
+**Format** : *SQL*  
+
+**TABEL: 4.5. Candidate_scores**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik record skor kriteria |
-| 2 | `candidate_id` | `BIGINT` | `FK`, `On Delete Cascade` | Relasi ke ID Kandidat (`candidates.id`) |
-| 3 | `criteria_id` | `BIGINT` | `FK`, `On Delete Cascade` | Relasi ke ID Kriteria (`criterias.id`) |
-| 4 | `score_val` | `INT` | `Not Null` | Nilai skor kriteria kandidat (Skala 1 s/d 5) |
-| 5 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 6 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Candidate_id | Bigint | 20 | Foreign Key (`candidates.id`) |
+| 3 | Criteria_id | Bigint | 20 | Foreign Key (`criterias.id`) |
+| 4 | Score_val | Int | 11 | Nilai indikator (Skala 1 s/d 5) |
+| 5 | Created_at | Timestamp | - | Waktu data dibuat |
+| 6 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-#### Tabel 6: `swot_evaluations`
-* **Nama Tabel**: `swot_evaluations`
-* **Fungsi**: Menyimpan skor evaluasi faktor internal (Strengths, Weaknesses) dan eksternal (Opportunities, Threats) serta hasil perhitungan IFAS, EFAS, kuadran, dan rekomendasi strategi SWOT.
-* **Primary Key**: `id`
-* **Foreign Key**: `candidate_id` (relasi ke `candidates.id`)
+f. Tabel `swot_evaluations`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *swot_evaluations*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *13 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola skor evaluasi faktor internal/eksternal SWOT  
+**Format** : *SQL*  
+
+**TABEL: 4.6. Swot_evaluations**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik evaluasi SWOT |
-| 2 | `candidate_id` | `BIGINT` | `FK`, `On Delete Cascade` | Relasi ke ID Kandidat (`candidates.id`) |
-| 3 | `strengths_score` | `FLOAT` | `Default: 3.0` | Skor Kekuatan / *Strengths* ($S$) |
-| 4 | `weaknesses_score` | `FLOAT` | `Default: 2.0` | Skor Kelemahan / *Weaknesses* ($W$) |
-| 5 | `opportunities_score`| `FLOAT` | `Default: 4.0` | Skor Peluang / *Opportunities* ($O$) |
-| 6 | `threats_score` | `FLOAT` | `Default: 2.0` | Skor Ancaman / *Threats* ($T$) |
-| 7 | `ifas_score` | `FLOAT` | `Default: 0.0` | Nilai IFAS ($S - W$) |
-| 8 | `efas_score` | `FLOAT` | `Default: 0.0` | Nilai EFAS ($O - T$) |
-| 9 | `quadrant` | `ENUM('SO', 'ST', 'WO', 'WT')` | `Default: 'SO'` | Kuadran matriks SWOT |
-| 10 | `strategy_recommendation` | `VARCHAR(255)` | `Nullable` | Teks rekomendasi strategi SWOT |
-| 11 | `notes` | `TEXT` | `Nullable` | Catatan penilai / tim HRD |
-| 12 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 13 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Candidate_id | Bigint | 20 | Foreign Key (`candidates.id`) |
+| 3 | Strengths_score | Float | - | Skor Kekuatan ($S$) |
+| 4 | Weaknesses_score | Float | - | Skor Kelemahan ($W$) |
+| 5 | Opportunities_score | Float | - | Skor Peluang ($O$) |
+| 6 | Threats_score | Float | - | Skor Ancaman ($T$) |
+| 7 | Ifas_score | Float | - | Nilai Faktor Internal ($S - W$) |
+| 8 | Efas_score | Float | - | Nilai Faktor Eksternal ($O - T$) |
+| 9 | Quadrant | Enum | - | Kategori Kualifikasi Profil (`SO`/`ST`/`WO`/`WT`) |
+| 10 | Strategy_recommendation | Varchar | 255 | Rekomendasi kualifikasi |
+| 11 | Notes | Text | - | Catatan penilai / HRD |
+| 12 | Created_at | Timestamp | - | Waktu data dibuat |
+| 13 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-#### Tabel 7: `calculation_results`
-* **Nama Tabel**: `calculation_results`
-* **Fungsi**: Menyimpan rekapitulasi hasil perhitungan skor SMART, skor SWOT, *Combination Score* (Nilai Akhir), peringkat (*rank*), dan keputusan akhir penerimaan.
-* **Primary Key**: `id`
-* **Foreign Key**: `candidate_id` (relasi ke `candidates.id`)
+g. Tabel `calculation_results`
 
-| No | Nama Field (Attribute) | Tipe Data | Constraint / Kunci | Keterangan / Deskripsi |
+**Nama Tabel** : *calculation_results*  
+**Nama Database** : *penerimaan_security*  
+**Jumlah Field** : *9 field*  
+**Primary Key** : *id*  
+**Fungsi** : mengelola rekapitulasi hasil perangkingan & rekomendasi  
+**Format** : *SQL*  
+
+**TABEL: 4.7. Calculation_results**
+
+| No | Field Name | Data Type | Width | Keterangan |
 |---|---|---|---|---|
-| 1 | `id` | `BIGINT` | `PK`, `Auto Increment` | Identitas unik hasil perangkingan |
-| 2 | `candidate_id` | `BIGINT` | `FK`, `On Delete Cascade` | Relasi ke ID Kandidat (`candidates.id`) |
-| 3 | `smart_score` | `FLOAT` | `Default: 0.0` | Total Skor SMART ($0.0 - 1.0$) |
-| 4 | `swot_score` | `FLOAT` | `Default: 0.0` | Total Skor Ter-normalisasi SWOT ($0.0 - 1.0$) |
-| 5 | `final_score` | `FLOAT` | `Default: 0.0` | Skor Kombinasi Akhir ($0.70 \times SMART + 0.30 \times SWOT$) |
-| 6 | `rank` | `INT` | `Default: 0` | Peringkat kandidat hasil perangkingan |
-| 7 | `recommendation_status` | `ENUM('Diterima', 'Pertimbangan', 'Ditolak')` | `Default: 'Pertimbangan'` | Keputusan penerimaan kandidat |
-| 8 | `created_at` | `TIMESTAMP` | `Nullable` | Waktu data dibuat |
-| 9 | `updated_at` | `TIMESTAMP` | `Nullable` | Waktu data terakhir diperbarui |
+| 1 | Id | Bigint | 20 | Primary Key |
+| 2 | Candidate_id | Bigint | 20 | Foreign Key (`candidates.id`) |
+| 3 | Smart_score | Float | - | Skor Indikator Kualifikasi ($0.0 - 1.0$) |
+| 4 | Swot_score | Float | - | Skor Potensi Profil ($0.0 - 1.0$) |
+| 5 | Final_score | Float | - | Skor Kelayakan Akhir ($0.70 \times Indikator + 0.30 \times Potensi$) |
+| 6 | Rank | Int | 11 | Peringkat pelamar |
+| 7 | Recommendation_status | Enum | - | Status rekomendasi keputusan (`Diterima`/`Pertimbangan`/`Ditolak`) |
+| 8 | Created_at | Timestamp | - | Waktu data dibuat |
+| 9 | Updated_at | Timestamp | - | Waktu data diperbarui |
 
 ---
 
-## 📋 Master Data Kriteria & Sub-Kriteria Default
+## 📋 Master Data Kriteria & Indikator Penilaian Default
 
-| Kode | Kriteria Penilaian | Tipe | Bobot Awal | Skala Nilai (1–5) & Indikator Penilaian |
-|---|---|---|---|---|
-| **C1** | Integritas (Catatan Kriminal / SKCK) | Benefit | 30% | 1: Kasus Berat<br>2: Kasus Ringan<br>3: Tanpa Catatan (Belum SKCK)<br>4: SKCK Bersih<br>5: SKCK Bersih + Referensi Institusi |
-| **C2** | Kesehatan Fisik & Tes Fisik | Benefit | 25% | 1: Ada Penyakit Berat / Tidak Layak<br>2: Kurang Prima<br>3: Sehat (Belum MCU)<br>4: Sehat MCU<br>5: Sehat Prima + Lulus Tes Fisik |
-| **C3** | Pengalaman Kerja Security | Benefit | 25% | 1: Tanpa Pengalaman<br>2: < 1 Tahun<br>3: 1–2 Tahun<br>4: 3–5 Tahun<br>5: > 5 Tahun / Perkantoran & Mall |
-| **C4** | Kesiapan Shift & Fleksibilitas | Benefit | 20% | 1: Tidak Fleksibel<br>2: 2 Shift (Kendala Transpor)<br>3: Bisa Semua Shift (Belum Terbukti)<br>4: Bisa Semua Shift (Domisili Dekat)<br>5: Siap Shift Malam & Pengalaman Shift |
+| Kriteria Penilaian                   | Tipe    | Bobot | Skala Nilai (1–5) & Indikator Kualifikasi                                                                                                                                     |
+| ------------------------------------ | ------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Integritas (Catatan Kriminal / SKCK) | Benefit | 30%   | 1: Kasus Berat<br>2: Kasus Ringan<br>3: Tanpa Catatan (Belum SKCK)<br>4: SKCK Bersih<br>5: SKCK Bersih + Referensi Institusi                                                  |
+| Kesehatan Fisik & Tes Fisik          | Benefit | 25%   | 1: Ada Penyakit Berat / Tidak Layak<br>2: Kurang Prima<br>3: Sehat (Belum MCU)<br>4: Sehat MCU<br>5: Sehat Prima + Lulus Tes Fisik                                            |
+| Pengalaman Kerja Security            | Benefit | 25%   | 1: Tanpa Pengalaman<br>2: < 1 Tahun<br>3: 1–2 Tahun<br>4: 3–5 Tahun<br>5: > 5 Tahun / Perkantoran & Mall                                                                      |
+| Kesiapan Shift & Fleksibilitas       | Benefit | 20%   | 1: Tidak Fleksibel<br>2: 2 Shift (Kendala Transpor)<br>3: Bisa Semua Shift (Belum Terbukti)<br>4: Bisa Semua Shift (Domisili Dekat)<br>5: Siap Shift Malam & Pengalaman Shift |
 
 ---
 
 ## ⚙️ Panduan Instalasi & Memulai
 
 ### Prasyarat Sistem
-* **PHP** >= 8.2 (ekstensi `pdo_mysql`, `mbstring`, `openssl`, `bcmath`, `gd` aktif)
-* **Composer** (v2.x)
-* **Node.js** (v18.x / v20.x) & **NPM**
-* **Database Server**: MySQL 8.0+ / MariaDB 10.4+ / SQLite
+
+- **PHP** >= 8.2 (ekstensi `pdo_mysql`, `mbstring`, `openssl`, `bcmath`, `gd` aktif)
+- **Composer** (v2.x)
+- **Node.js** (v18.x / v20.x) & **NPM**
+- **Database Server**: MySQL 8.0+ / MariaDB 10.4+ / SQLite
 
 ---
 
 ### Langkah-Langkah Setup Local Environment
 
 1. **Clone Repositori Proyek**:
-   ```bash
-   git clone <repository_url>
-   cd penerimaan_security
-   ```
+
+    ```bash
+    git clone <repository_url>
+    cd penerimaan_security
+    ```
 
 2. **Install Dependensi Composer & NPM**:
-   ```bash
-   composer install
-   npm install
-   ```
+
+    ```bash
+    composer install
+    npm install
+    ```
 
 3. **Konfigurasi Environment File (`.env`)**:
    Salin `.env.example` menjadi `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Atur koneksi database pada `.env`:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_DATABASE=penerimaan_security
-   DB_USERNAME=root
-   DB_PASSWORD=
-   ```
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Atur koneksi database pada `.env`:
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=penerimaan_security
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
 4. **Generate App Key, Migrasi & Seed Database**:
-   ```bash
-   php artisan key:generate
-   php artisan migrate:fresh --seed
-   ```
+
+    ```bash
+    php artisan key:generate
+    php artisan migrate:fresh --seed
+    ```
 
 5. **Jalankan Application Server & Asset Compiler**:
-   - Terminal 1 (Laravel Local Server):
-     ```bash
-     php artisan serve
-     ```
-   - Terminal 2 (Vite Compiler):
-     ```bash
-     npm run dev
-     ```
+    - Terminal 1 (Laravel Local Server):
+        ```bash
+        php artisan serve
+        ```
+    - Terminal 2 (Vite Compiler):
+        ```bash
+        npm run dev
+        ```
 
 6. **Akses Aplikasi melalui Browser**:
    Buka URL: `http://127.0.0.1:8000`
@@ -476,12 +520,13 @@ erDiagram
 
 Gunakan akun seeder berikut untuk melakukan pengujian sistem:
 
-| Email | Password | Peran (Role) | Hak Akses |
-|---|---|---|---|
-| `admin@sentraniaga.com` | `password` | Administrator | Full Access (Kelola User, Kriteria, Candidate, Perhitungan, Laporan) |
-| `hrd@sentraniaga.com` | `password` | Tim HRD | HR Access (Kelola Candidate, Input Evaluasi, Perhitungan, Cetak Laporan) |
+| Email                   | Password   | Peran (Role)  | Hak Akses                                                        |
+| ----------------------- | ---------- | ------------- | ---------------------------------------------------------------- |
+| `admin@sentraniaga.com` | `password` | Administrator | Full Access (Kelola User, Data Pelamar, Evaluasi, Cetak Laporan) |
+| `hrd@sentraniaga.com`   | `password` | Tim HRD       | HR Access (Kelola Data Pelamar, Input Evaluasi, Cetak Laporan)   |
 
 ---
 
 ## 📄 Lisensi
-Sistem Pendukung Keputusan (SPK) Penerimaan Security ini dikembangkan untuk mengoptimalkan proses seleksi anggota keamanan yang obyektif dan akurat.
+
+Sistem Penilaian & Seleksi Penerimaan Security ini dikembangkan untuk PT Sentra Niaga Bekasi guna mengoptimalkan proses seleksi anggota keamanan yang obyektif, terstandar, dan profesional.

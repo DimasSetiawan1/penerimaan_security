@@ -36,8 +36,8 @@
                 <i class="fa-solid fa-shield-halved text-3xl"></i>
             </div>
             <h1 class="text-2xl font-black tracking-tight text-white">SENTRA NIAGA BEKASI</h1>
-            <p class="text-xs text-sky-400 font-semibold tracking-wider uppercase mt-1">SPK Penerimaan Security (SMART &
-                SWOT)</p>
+            <p class="text-xs text-sky-400 font-semibold tracking-wider uppercase mt-1">Sistem Seleksi & Evaluasi
+                Pelamar Security</p>
         </div>
 
         @if(session('error'))

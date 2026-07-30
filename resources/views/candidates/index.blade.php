@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Data Kandidat & Penilaian - Sentra Niaga Bekasi')
-@section('header_title', 'Kelola Data Kandidat Pelamar Security & Penilaian')
+@section('title', 'Data Pelamar & Evaluasi - Sentra Niaga Bekasi')
+@section('header_title', 'Kelola Data Pelamar Security & Evaluasi Penilaian')
 
 @section('content')
 <div class="space-y-8">
@@ -10,7 +10,7 @@
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
             <h1 class="text-xl font-extrabold text-slate-800">Data Pelamar & Evaluasi Penilaian</h1>
-            <p class="text-xs text-slate-500 mt-1">Daftar kandidat security yang terdaftar dalam Sistem Pendukung Keputusan</p>
+            <p class="text-xs text-slate-500 mt-1">Daftar pelamar security yang terdaftar dalam sistem seleksi</p>
         </div>
 
         <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full md:w-auto">
@@ -30,20 +30,20 @@
 
     <!-- Candidate List Table -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+        <div class="overflow-x-auto w-full">
+            <table class="w-full text-left text-sm text-slate-600 min-w-max border-collapse">
+                <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[11px] tracking-wider border-b border-slate-200">
                     <tr>
-                        <th class="px-6 py-4">Kode & Pelamar</th>
-                        <th class="px-6 py-4 text-center">Integritas (C1)</th>
-                        <th class="px-6 py-4 text-center">Kesehatan (C2)</th>
-                        <th class="px-6 py-4 text-center">Pengalaman (C3)</th>
-                        <th class="px-6 py-4 text-center">Shift (C4)</th>
-                        <th class="px-6 py-4 text-center">Analisis SWOT</th>
-                        <th class="px-6 py-4 text-center">Skor SMART</th>
-                        <th class="px-6 py-4 text-center">Skor Akhir (%)</th>
-                        <th class="px-6 py-4 text-center">Status</th>
-                        <th class="px-6 py-4 text-center">Aksi</th>
+                        <th class="px-5 py-4 whitespace-nowrap">Kode & Pelamar</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Integritas</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Kesehatan Fisik</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Pengalaman Kerja</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Kesiapan Shift</th>
+                        <th class="px-5 py-4 whitespace-nowrap text-center">Kualifikasi Profil</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Nilai Indikator</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Skor Kelayakan</th>
+                        <th class="px-5 py-4 whitespace-nowrap text-center">Status Rekomendasi</th>
+                        <th class="px-4 py-4 whitespace-nowrap text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -58,82 +58,89 @@
                         $swot = $cand->swotEvaluation;
                     @endphp
                     <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="px-6 py-4">
+                        <td class="px-5 py-4 whitespace-nowrap">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 font-black flex items-center justify-center text-xs">
+                                <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 font-black flex items-center justify-center text-xs flex-shrink-0">
                                     {{ $cand->code }}
                                 </div>
                                 <div>
-                                    <div class="font-extrabold text-slate-800 text-sm">{{ $cand->name }}</div>
-                                    <div class="text-xs text-slate-400">NIK: {{ $cand->nik ?? '-' }} • {{ $cand->phone ?? '-' }}</div>
+                                    <div class="font-extrabold text-slate-800 text-sm whitespace-nowrap">{{ $cand->name }}</div>
+                                    <div class="text-xs text-slate-400 whitespace-nowrap">NIK: {{ $cand->nik ?? '-' }} • {{ $cand->phone ?? '-' }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-center font-bold">
+                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
                             <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
                                 {{ $c1 }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center font-bold">
+                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
                             <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
                                 {{ $c2 }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center font-bold">
+                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
                             <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
                                 {{ $c3 }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center font-bold">
+                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
                             <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
                                 {{ $c4 }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($swot)
                             @php
                                 $quad = $swot->quadrant;
+                                $quadLabel = match($quad) {
+                                    'SO' => 'Sangat Layak',
+                                    'ST' => 'Layak',
+                                    'WO' => 'Pertimbangan',
+                                    'WT' => 'Tidak Layak',
+                                    default => '-'
+                                };
                                 $badgeClass = match($quad) {
-                                    'SO' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
-                                    'ST' => 'bg-amber-100 text-amber-800 border-amber-200',
-                                    'WO' => 'bg-blue-100 text-blue-800 border-blue-200',
-                                    'WT' => 'bg-rose-100 text-rose-800 border-rose-200',
-                                    default => 'bg-slate-100 text-slate-800'
+                                    'SO' => 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                                    'ST' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                    'WO' => 'bg-amber-100 text-amber-800 border-amber-300',
+                                    'WT' => 'bg-rose-100 text-rose-800 border-rose-300',
+                                    default => 'bg-slate-100 text-slate-800 border-slate-200'
                                 };
                             @endphp
-                            <span class="px-2.5 py-1 text-[11px] font-black rounded-lg border {{ $badgeClass }}">
-                                {{ $quad }} (X:{{ round($swot->ifas_score,1) }}, Y:{{ round($swot->efas_score,1) }})
+                            <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 text-xs font-extrabold rounded-full border {{ $badgeClass }}">
+                                {{ $quadLabel }}
                             </span>
                             @else
-                            <span class="text-xs text-slate-400">-</span>
+                            <span class="text-xs text-slate-400 whitespace-nowrap">-</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-center font-bold text-slate-700">
+                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold text-slate-700">
                             {{ $res ? round($res->smart_score * 100, 2) . '%' : '-' }}
                         </td>
-                        <td class="px-6 py-4 text-center font-black text-sky-600 text-base">
+                        <td class="px-4 py-4 whitespace-nowrap text-center font-black text-sky-600 text-base">
                             {{ $res ? round($res->final_score * 100, 2) . '%' : '-' }}
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($res)
                                 @if($res->recommendation_status == 'Diterima')
-                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
                                         DITERIMA
                                     </span>
                                 @elseif($res->recommendation_status == 'Pertimbangan')
-                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-200">
+                                    <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
                                         PERTIMBANGAN
                                     </span>
                                 @else
-                                    <span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 border border-rose-200">
+                                    <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300">
                                         DITOLAK
                                     </span>
                                 @endif
                             @else
-                                <span class="px-2.5 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-semibold">Belum Evaluasi</span>
+                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-semibold">Belum Evaluasi</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-4 py-4 whitespace-nowrap text-center">
                             <div class="flex items-center justify-center space-x-2" x-data="{ openDelete: false }">
                                 <a href="{{ route('candidates.edit', $cand->id) }}" 
                                    class="p-2 text-slate-600 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors" title="Edit & Evaluasi">
@@ -153,7 +160,7 @@
                                             <i class="fa-solid fa-triangle-exclamation text-xl"></i>
                                         </div>
                                         <h3 class="text-base font-extrabold text-slate-800 mb-1">Konfirmasi Hapus Data</h3>
-                                        <p class="text-xs text-slate-500 mb-4">Apakah Anda yakin ingin menghapus kandidat <strong>{{ $cand->name }}</strong> ({{ $cand->code }})?</p>
+                                        <p class="text-xs text-slate-500 mb-4">Apakah Anda yakin ingin menghapus pelamar <strong>{{ $cand->name }}</strong> ({{ $cand->code }})?</p>
 
                                         <form action="{{ route('candidates.destroy', $cand->id) }}" method="POST" class="flex justify-end space-x-2">
                                             @csrf

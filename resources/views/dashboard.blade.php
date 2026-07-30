@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - SPK Security Sentra Niaga Bekasi')
-@section('header_title', 'Dashboard Overview & Statistik Keputusan')
+@section('title', 'Dashboard - Sentra Niaga Bekasi')
+@section('header_title', 'Dashboard Overview & Statistik Seleksi Security')
 
 @section('content')
 <div class="space-y-8">
@@ -18,15 +18,12 @@
                 </div>
                 <h1 class="text-2xl lg:text-3xl font-black tracking-tight">Selamat Datang, {{ Auth::user()->name }} 👋</h1>
                 <p class="text-slate-300 text-sm leading-relaxed">
-                    Sistem Pendukung Keputusan Seleksi Penerimaan Anggota Security menggunakan integrasi **Metode SMART** (Simple Multi Attribute Rating Technique) dan **Analisis SWOT**.
+                    Sistem Penilaian Kelayakan & Seleksi Penerimaan Anggota Security berbasis evaluasi terstruktur dan transparan.
                 </p>
             </div>
             <div class="flex items-center space-x-3">
                 <a href="{{ route('candidates.create') }}" class="px-5 py-3 bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold rounded-xl shadow-lg shadow-sky-500/30 transition-all flex items-center">
-                    <i class="fa-solid fa-user-plus mr-2"></i> Tambah Candidate Baru
-                </a>
-                <a href="{{ route('calculation.index') }}" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl border border-slate-700 transition-all flex items-center">
-                    <i class="fa-solid fa-calculator mr-2"></i> Lihat Perhitungan
+                    <i class="fa-solid fa-user-plus mr-2"></i> Tambah Pelamar Baru
                 </a>
             </div>
         </div>
@@ -55,7 +52,7 @@
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Evaluasi Selesai</p>
                     <h3 class="text-3xl font-black text-emerald-600 mt-1">{{ $evaluatedCount }}</h3>
-                    <p class="text-xs font-semibold text-emerald-700 mt-1">Sudah Dinilai SMART-SWOT</p>
+                    <p class="text-xs font-semibold text-emerald-700 mt-1">Telah Dievaluasi</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
                     <i class="fa-solid fa-user-check text-xl"></i>
@@ -69,7 +66,7 @@
                 <div>
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Status Diterima</p>
                     <h3 class="text-3xl font-black text-sky-600 mt-1">{{ $statusCount['Diterima'] ?? 0 }}</h3>
-                    <p class="text-xs font-semibold text-sky-700 mt-1">Skor Akhir &ge; 75%</p>
+                    <p class="text-xs font-semibold text-sky-700 mt-1">Skor Kelayakan &ge; 75%</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center border border-sky-100">
                     <i class="fa-solid fa-award text-xl"></i>
@@ -81,9 +78,9 @@
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Kriteria Penilaian</p>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Indikator Penilaian</p>
                     <h3 class="text-3xl font-black text-indigo-600 mt-1">{{ $totalCriterias }}</h3>
-                    <p class="text-xs font-semibold text-indigo-700 mt-1">C1 - C4 (Benefit)</p>
+                    <p class="text-xs font-semibold text-indigo-700 mt-1">4 Kriteria Utama (Benefit)</p>
                 </div>
                 <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
                     <i class="fa-solid fa-sliders text-xl"></i>
@@ -100,12 +97,9 @@
         <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="text-base font-extrabold text-slate-800">Grafik Peringkat Kandidat Tertinggi</h3>
-                    <p class="text-xs text-slate-500">Skor Gabungan (70% SMART + 30% SWOT)</p>
+                    <h3 class="text-base font-extrabold text-slate-800">Grafik Peringkat Kelayakan Pelamar</h3>
+                    <p class="text-xs text-slate-500">Skor Akhir Evaluasi Kelayakan (%)</p>
                 </div>
-                <a href="{{ route('calculation.index') }}" class="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center">
-                    Detail Kalkulasi <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
-                </a>
             </div>
             <div class="h-64">
                 <canvas id="rankingChart"></canvas>
@@ -116,8 +110,8 @@
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base font-extrabold text-slate-800">Distribusi Kuadran SWOT</h3>
-                    <span class="text-xs font-bold text-slate-400 uppercase">Strategi</span>
+                    <h3 class="text-base font-extrabold text-slate-800">Distribusi Kategori Kualifikasi</h3>
+                    <span class="text-xs font-bold text-slate-400 uppercase">Kualifikasi</span>
                 </div>
                 <div class="h-56 relative flex items-center justify-center">
                     <canvas id="swotChart"></canvas>
@@ -125,16 +119,16 @@
             </div>
             <div class="grid grid-cols-2 gap-2 mt-4 text-xs font-semibold pt-4 border-t border-slate-100">
                 <div class="flex items-center text-emerald-700">
-                    <span class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></span> Kuadran SO: {{ $quadrantsCount['SO'] }}
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></span> Sangat Layak: {{ $quadrantsCount['SO'] }}
+                </div>
+                <div class="flex items-center text-emerald-600">
+                    <span class="w-3 h-3 rounded-full bg-emerald-400 mr-2"></span> Layak: {{ $quadrantsCount['ST'] }}
                 </div>
                 <div class="flex items-center text-amber-700">
-                    <span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span> Kuadran ST: {{ $quadrantsCount['ST'] }}
-                </div>
-                <div class="flex items-center text-blue-700">
-                    <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span> Kuadran WO: {{ $quadrantsCount['WO'] }}
+                    <span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span> Pertimbangan: {{ $quadrantsCount['WO'] }}
                 </div>
                 <div class="flex items-center text-rose-700">
-                    <span class="w-3 h-3 rounded-full bg-rose-500 mr-2"></span> Kuadran WT: {{ $quadrantsCount['WT'] }}
+                    <span class="w-3 h-3 rounded-full bg-rose-500 mr-2"></span> Tidak Layak: {{ $quadrantsCount['WT'] }}
                 </div>
             </div>
         </div>
@@ -145,8 +139,8 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-                <h3 class="text-base font-extrabold text-slate-800">5 Kandidat Teratas (Rekomendasi Terbaik)</h3>
-                <p class="text-xs text-slate-500">Urutan peringkat berdasarkan hasil kalkulasi SPK penerimaan security</p>
+                <h3 class="text-base font-extrabold text-slate-800">5 Pelamar Teratas (Rekomendasi Terbaik)</h3>
+                <p class="text-xs text-slate-500">Urutan peringkat berdasarkan hasil evaluasi kelayakan penerimaan security</p>
             </div>
             <a href="{{ route('reports.index') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors">
                 <i class="fa-solid fa-file-export mr-1.5"></i> Lihat Semua & Cetak Laporan
@@ -159,10 +153,10 @@
                     <tr>
                         <th class="px-6 py-4">Peringkat</th>
                         <th class="px-6 py-4">Kode & Nama Pelamar</th>
-                        <th class="px-6 py-4 text-center">Skor SMART</th>
-                        <th class="px-6 py-4 text-center">Skor SWOT</th>
-                        <th class="px-6 py-4 text-center">Kuadran SWOT</th>
-                        <th class="px-6 py-4 text-center">Skor Akhir (%)</th>
+                        <th class="px-6 py-4 text-center">Skor Indikator</th>
+                        <th class="px-6 py-4 text-center">Skor Potensi</th>
+                        <th class="px-6 py-4 text-center">Kualifikasi Profil</th>
+                        <th class="px-6 py-4 text-center">Skor Kelayakan (%)</th>
                         <th class="px-6 py-4 text-center">Keputusan</th>
                     </tr>
                 </thead>
@@ -199,16 +193,23 @@
                         <td class="px-6 py-4 text-center">
                             @php
                                 $quad = $res->candidate->swotEvaluation->quadrant ?? 'SO';
+                                $quadLabel = match($quad) {
+                                    'SO' => 'Sangat Layak',
+                                    'ST' => 'Layak',
+                                    'WO' => 'Pertimbangan',
+                                    'WT' => 'Tidak Layak',
+                                    default => '-'
+                                };
                                 $badgeClass = match($quad) {
                                     'SO' => 'bg-emerald-100 text-emerald-800 border-emerald-200',
-                                    'ST' => 'bg-amber-100 text-amber-800 border-amber-200',
-                                    'WO' => 'bg-blue-100 text-blue-800 border-blue-200',
+                                    'ST' => 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                                    'WO' => 'bg-amber-100 text-amber-800 border-amber-200',
                                     'WT' => 'bg-rose-100 text-rose-800 border-rose-200',
                                     default => 'bg-slate-100 text-slate-800'
                                 };
                             @endphp
                             <span class="inline-block px-2.5 py-1 text-xs font-black rounded-lg border {{ $badgeClass }}">
-                                Kuadran {{ $quad }}
+                                {{ $quadLabel }}
                             </span>
                         </td>
                         <td class="px-6 py-4 text-center font-black text-sky-600 text-base">
@@ -255,7 +256,7 @@
             data: {
                 labels: rankingLabels,
                 datasets: [{
-                    label: 'Skor Akhir (%)',
+                    label: 'Skor Kelayakan (%)',
                     data: rankingScores,
                     backgroundColor: '#0284c7',
                     borderRadius: 8,
@@ -283,7 +284,7 @@
         new Chart(ctxSwot, {
             type: 'doughnut',
             data: {
-                labels: ['SO (Agresif)', 'ST (Diversifikasi)', 'WO (Turnaround)', 'WT (Defensif)'],
+                labels: ['Sangat Layak', 'Layak', 'Pertimbangan', 'Tidak Layak'],
                 datasets: [{
                     data: [
                         {{ $quadrantsCount['SO'] }},
@@ -291,7 +292,7 @@
                         {{ $quadrantsCount['WO'] }},
                         {{ $quadrantsCount['WT'] }}
                     ],
-                    backgroundColor: ['#10b981', '#f59e0b', '#3b82f6', '#f43f5e'],
+                    backgroundColor: ['#10b981', '#34d399', '#f59e0b', '#f43f5e'],
                     borderWidth: 2,
                     borderColor: '#ffffff'
                 }]

@@ -26,28 +26,11 @@ class CriteriaController extends Controller
 
     public function updateWeight(Request $request, $id)
     {
-        $request->validate([
-            'weight' => ['required', 'numeric', 'min:1', 'max:100'],
-        ]);
-
-        $criteria = Criteria::findOrFail($id);
-        $criteria->update(['weight' => $request->weight]);
-
-        // Recalculate results
-        $this->smartSwotService->calculateAll();
-
-        return redirect()->back()->with('success', "Bobot kriteria {$criteria->code} berhasil diperbarui.");
+        return redirect()->back()->with('error', 'Data kriteria bersifat standar tetap (fixed database) dan tidak dapat diubah.');
     }
 
     public function updateSubCriteria(Request $request, $id)
     {
-        $request->validate([
-            'description' => ['required', 'string', 'max:255'],
-        ]);
-
-        $sub = SubCriteria::findOrFail($id);
-        $sub->update(['description' => $request->description]);
-
-        return redirect()->back()->with('success', "Sub-kriteria Nilai {$sub->value} berhasil diperbarui.");
+        return redirect()->back()->with('error', 'Indikator penilaian bersifat standar tetap (fixed database) dan tidak dapat diubah.');
     }
 }

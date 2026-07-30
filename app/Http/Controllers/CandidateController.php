@@ -60,10 +60,6 @@ class CandidateController extends Controller
             'address' => ['nullable', 'string'],
             'scores' => ['required', 'array'],
             'scores.*' => ['required', 'integer', 'min:1', 'max:5'],
-            'strengths_score' => ['required', 'numeric', 'min:1', 'max:5'],
-            'weaknesses_score' => ['required', 'numeric', 'min:1', 'max:5'],
-            'opportunities_score' => ['required', 'numeric', 'min:1', 'max:5'],
-            'threats_score' => ['required', 'numeric', 'min:1', 'max:5'],
         ]);
 
         DB::transaction(function () use ($request) {
@@ -84,20 +80,12 @@ class CandidateController extends Controller
                     'score_val' => $val,
                 ]);
             }
-
-            SwotEvaluation::create([
-                'candidate_id' => $candidate->id,
-                'strengths_score' => $request->strengths_score,
-                'weaknesses_score' => $request->weaknesses_score,
-                'opportunities_score' => $request->opportunities_score,
-                'threats_score' => $request->threats_score,
-            ]);
         });
 
-        // Recalculate SMART & SWOT
+        // Recalculate Evaluation Scores
         $this->smartSwotService->calculateAll();
 
-        return redirect()->route('candidates.index')->with('success', 'Data kandidat pelamar security berhasil ditambahkan dan dievaluasi.');
+        return redirect()->route('candidates.index')->with('success', 'Data pelamar security berhasil ditambahkan dan dievaluasi.');
     }
 
     public function edit($id)
@@ -121,10 +109,6 @@ class CandidateController extends Controller
             'address' => ['nullable', 'string'],
             'scores' => ['required', 'array'],
             'scores.*' => ['required', 'integer', 'min:1', 'max:5'],
-            'strengths_score' => ['required', 'numeric', 'min:1', 'max:5'],
-            'weaknesses_score' => ['required', 'numeric', 'min:1', 'max:5'],
-            'opportunities_score' => ['required', 'numeric', 'min:1', 'max:5'],
-            'threats_score' => ['required', 'numeric', 'min:1', 'max:5'],
         ]);
 
         DB::transaction(function () use ($request, $candidate) {
@@ -147,22 +131,12 @@ class CandidateController extends Controller
                     ['score_val' => $val]
                 );
             }
-
-            SwotEvaluation::updateOrCreate(
-                ['candidate_id' => $candidate->id],
-                [
-                    'strengths_score' => $request->strengths_score,
-                    'weaknesses_score' => $request->weaknesses_score,
-                    'opportunities_score' => $request->opportunities_score,
-                    'threats_score' => $request->threats_score,
-                ]
-            );
         });
 
-        // Recalculate SMART & SWOT
+        // Recalculate Evaluation Scores
         $this->smartSwotService->calculateAll();
 
-        return redirect()->route('candidates.index')->with('success', "Data kandidat {$candidate->name} berhasil diperbarui.");
+        return redirect()->route('candidates.index')->with('success', "Data pelamar {$candidate->name} berhasil diperbarui.");
     }
 
     public function destroy($id)
