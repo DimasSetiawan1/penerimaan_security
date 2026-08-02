@@ -41,30 +41,28 @@ class CandidateController extends Controller
     public function create()
     {
         $criterias = Criteria::with('subCriterias')->get();
-        // Generate auto candidate code e.g. K06
-        $latest = Candidate::orderBy('id', 'desc')->first();
-        $nextNum = $latest ? ((int) str_replace('K', '', $latest->code) + 1) : 1;
-        $nextCode = 'K' . str_pad($nextNum, 2, '0', STR_PAD_LEFT);
-
-        return view('candidates.create', compact('criterias', 'nextCode'));
+        return view('candidates.create', compact('criterias'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'code' => ['required', 'string', 'unique:candidates,code'],
-            'nik' => ['nullable', 'string', 'max:20'],
-            'name' => ['required', 'string', 'max:255'],
+            'nik' => ['required', 'digits:16'],
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
             'gender' => ['required', 'in:L,P'],
-            'phone' => ['nullable', 'string', 'max:20'],
+            'phone' => ['required', 'numeric'],
             'address' => ['nullable', 'string'],
-            'scores' => ['required', 'array'],
+            'scores' => ['required', 'array', 'size:' . \App\Models\Criteria::count()],
             'scores.*' => ['required', 'integer', 'min:1', 'max:5'],
         ]);
 
         DB::transaction(function () use ($request) {
+            $latest = Candidate::orderBy('id', 'desc')->first();
+            $nextNum = $latest ? ((int) str_replace('K', '', $latest->code) + 1) : 1;
+            $nextCode = 'K' . str_pad($nextNum, 2, '0', STR_PAD_LEFT);
+
             $candidate = Candidate::create([
-                'code' => $request->code,
+                'code' => $nextCode,
                 'nik' => $request->nik,
                 'name' => $request->name,
                 'gender' => $request->gender,
@@ -101,19 +99,17 @@ class CandidateController extends Controller
         $candidate = Candidate::findOrFail($id);
 
         $request->validate([
-            'code' => ['required', 'string', 'unique:candidates,code,' . $id],
-            'nik' => ['nullable', 'string', 'max:20'],
-            'name' => ['required', 'string', 'max:255'],
+            'nik' => ['required', 'digits:16'],
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
             'gender' => ['required', 'in:L,P'],
-            'phone' => ['nullable', 'string', 'max:20'],
+            'phone' => ['required', 'numeric'],
             'address' => ['nullable', 'string'],
-            'scores' => ['required', 'array'],
+            'scores' => ['required', 'array', 'size:' . \App\Models\Criteria::count()],
             'scores.*' => ['required', 'integer', 'min:1', 'max:5'],
         ]);
 
         DB::transaction(function () use ($request, $candidate) {
             $candidate->update([
-                'code' => $request->code,
                 'nik' => $request->nik,
                 'name' => $request->name,
                 'gender' => $request->gender,

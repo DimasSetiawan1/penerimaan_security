@@ -33,23 +33,18 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Kode Pelamar</label>
-                    <input type="text" name="code" value="{{ old('code', $candidate->code) }}" required
-                           class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 font-extrabold text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
-                    @error('code')<p class="text-xs text-rose-500 mt-1">{{ $message }}</p>@enderror
-                </div>
+
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">NIK</label>
-                    <input type="text" name="nik" value="{{ old('nik', $candidate->nik) }}"
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">NIK <span class="text-rose-500">*</span></label>
+                    <input type="text" name="nik" value="{{ old('nik', $candidate->nik) }}" required minlength="16" maxlength="16" pattern="\d{16}" title="NIK harus tepat 16 digit angka"
                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
                     @error('nik')<p class="text-xs text-rose-500 mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nama Lengkap</label>
-                    <input type="text" name="name" value="{{ old('name', $candidate->name) }}" required
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nama Lengkap <span class="text-rose-500">*</span></label>
+                    <input type="text" name="name" value="{{ old('name', $candidate->name) }}" required pattern="[A-Za-z\s]+" title="Nama hanya boleh berisi huruf dan spasi"
                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-sky-500">
                     @error('name')<p class="text-xs text-rose-500 mt-1">{{ $message }}</p>@enderror
                 </div>
@@ -63,8 +58,8 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nomor HP / WhatsApp</label>
-                    <input type="text" name="phone" value="{{ old('phone', $candidate->phone) }}"
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nomor HP / WhatsApp <span class="text-rose-500">*</span></label>
+                    <input type="tel" name="phone" value="{{ old('phone', $candidate->phone) }}" required pattern="\d+" title="Nomor HP hanya boleh berisi angka"
                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
                 </div>
 
