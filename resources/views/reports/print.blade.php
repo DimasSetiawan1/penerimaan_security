@@ -15,7 +15,7 @@
         @media print {
             body { bg-color: #ffffff !important; }
             .no-print { display: none !important; }
-            @page { margin: 1.5cm; size: A4 landscape; }
+            @page { margin: 1cm; size: A4 portrait; }
         }
     </style>
 </head>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Official Paper Layout -->
-    <div class="max-w-4xl print:max-w-none mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-sm border border-slate-200 space-y-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-5">
         
         <!-- Kop Surat Official -->
         <div class="border-b-2 border-slate-900 pb-4 text-center">
@@ -60,16 +60,15 @@
         <!-- Ranking Results Table -->
         <div class="space-y-2">
             <p class="text-xs font-bold text-slate-800 uppercase tracking-wider">Daftar Peringkat Rekomendasi Pelamar:</p>
-            <table class="w-full text-left text-xs border-collapse border border-slate-300">
+            <table class="w-full text-left text-[10px] border-collapse border border-slate-300">
                 <thead>
                     <tr class="bg-slate-100 text-slate-800 font-bold uppercase border-b border-slate-300">
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Rank</th>
-                        <th class="p-2.5 border border-slate-300 whitespace-nowrap">Kode & Nama Pelamar</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Integritas</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Kesehatan</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Pengalaman</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Kesiapan Shift</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Hasil Keputusan</th>
+                        <th class="p-2 border border-slate-300">Nama Pelamar</th>
+                        <th class="p-2 border border-slate-300 text-center">Integritas</th>
+                        <th class="p-2 border border-slate-300 text-center">Kesehatan</th>
+                        <th class="p-2 border border-slate-300 text-center">Pengalaman</th>
+                        <th class="p-2 border border-slate-300 text-center">Kesiapan Shift</th>
+                        <th class="p-2 border border-slate-300 text-center">Keputusan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,16 +86,14 @@
                         $c4_desc = $c4_val ? $criterias->get(4)->subCriterias->firstWhere('value', $c4_val)->description ?? '-' : '-';
                     @endphp
                     <tr>
-                        <td class="p-2.5 border border-slate-300 text-center font-black whitespace-nowrap">#{{ $res->rank }}</td>
-                        <td class="p-2.5 border border-slate-300 whitespace-nowrap">
+                        <td class="p-2 border border-slate-300">
                             <span class="font-bold">{{ $res->candidate->name }}</span>
-                            <span class="block text-[10px] text-slate-500 font-mono">{{ $res->candidate->code }} • NIK: {{ $res->candidate->nik ?? '-' }}</span>
                         </td>
-                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c1_desc }}</td>
-                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c2_desc }}</td>
-                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c3_desc }}</td>
-                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c4_desc }}</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-extrabold whitespace-nowrap">
+                        <td class="p-2 border border-slate-300 text-[9px] font-semibold max-w-[150px]">{{ $c1_desc }}</td>
+                        <td class="p-2 border border-slate-300 text-[9px] font-semibold max-w-[150px]">{{ $c2_desc }}</td>
+                        <td class="p-2 border border-slate-300 text-[9px] font-semibold max-w-[150px]">{{ $c3_desc }}</td>
+                        <td class="p-2 border border-slate-300 text-[9px] font-semibold max-w-[150px]">{{ $c4_desc }}</td>
+                        <td class="p-2 border border-slate-300 text-center font-extrabold">
                             {{ strtoupper($res->recommendation_status) }}
                         </td>
                     </tr>
@@ -111,17 +108,17 @@
         </p>
 
         <!-- Signatures Area -->
-        <div class="pt-8 grid grid-cols-2 gap-8 text-xs text-slate-800">
+        <div class="pt-4 grid grid-cols-2 gap-8 text-xs text-slate-800">
             <div>
                 <p class="font-bold">Mengetahui,</p>
                 <p class="font-extrabold mt-0.5">Kepala Manajemen Operasional</p>
-                <div class="h-20"></div>
+                <div class="h-16"></div>
                 <p class="font-extrabold text-slate-900 underline underline-offset-4">( .................................................... )</p>
             </div>
             <div class="text-right">
                 <p class="font-bold">Bekasi, {{ now()->translatedFormat('d F Y') }}</p>
                 <p class="font-extrabold mt-0.5">Ketua Tim HRD & Penilai</p>
-                <div class="h-20"></div>
+                <div class="h-16"></div>
                 <p class="font-extrabold text-slate-900 underline underline-offset-4">( {{ Auth::user()->name ?? 'Administrator' }} )</p>
             </div>
         </div>
