@@ -7,6 +7,8 @@ use App\Http\Controllers\CriteriaController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\CalculationController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\IsAdmin;
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -35,4 +37,9 @@ Route::middleware(['auth'])->group(function () {
     // Reports Routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/print', [ReportController::class, 'print'])->name('reports.print');
+
+    // Admin Routes
+    Route::middleware([IsAdmin::class])->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+    });
 });

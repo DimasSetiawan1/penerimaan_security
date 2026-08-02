@@ -581,7 +581,7 @@ e. Pengujian Hak Akses Pengguna (Role-Based Access Control)
 
 | No  | Skenario Pengujian                       | Hasil Pengujian                                                                   | Keterangan |
 | --- | ---------------------------------------- | --------------------------------------------------------------------------------- | ---------- |
-| 1   | Login menggunakan akun Admin (POV Admin) | Sidebar hanya menampilkan menu Dashboard & Data Pelamar, menu Laporan di-hide     | Valid      |
+| 1   | Login menggunakan akun Admin (POV Admin) | Sidebar menampilkan seluruh menu termasuk Laporan Hasil Seleksi dan Cetak Laporan | Valid      |
 | 2   | Login menggunakan akun Tim HRD (POV HRD) | Sidebar menampilkan seluruh menu termasuk Laporan Hasil Seleksi dan Cetak Laporan | Valid      |
 
 ---

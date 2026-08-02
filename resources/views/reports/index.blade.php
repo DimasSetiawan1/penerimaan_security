@@ -60,9 +60,6 @@
                         <th class="px-4 py-4 text-center whitespace-nowrap">Kesehatan Fisik</th>
                         <th class="px-4 py-4 text-center whitespace-nowrap">Pengalaman Kerja</th>
                         <th class="px-4 py-4 text-center whitespace-nowrap">Kesiapan Shift</th>
-                        <th class="px-4 py-4 text-center whitespace-nowrap">Skor Indikator</th>
-                        <th class="px-4 py-4 text-center whitespace-nowrap">Skor Potensi</th>
-                        <th class="px-4 py-4 text-center whitespace-nowrap">Skor Akhir (%)</th>
                         <th class="px-5 py-4 text-center whitespace-nowrap">Hasil Keputusan</th>
                     </tr>
                 </thead>
@@ -70,6 +67,15 @@
                     @forelse($results as $res)
                     @php
                         $scores = $res->candidate->scores->keyBy('criteria_id');
+                        $c1_val = $scores->get(1)->score_val ?? null;
+                        $c2_val = $scores->get(2)->score_val ?? null;
+                        $c3_val = $scores->get(3)->score_val ?? null;
+                        $c4_val = $scores->get(4)->score_val ?? null;
+                        
+                        $c1_desc = $c1_val ? $criterias->get(1)->subCriterias->firstWhere('value', $c1_val)->description ?? '-' : '-';
+                        $c2_desc = $c2_val ? $criterias->get(2)->subCriterias->firstWhere('value', $c2_val)->description ?? '-' : '-';
+                        $c3_desc = $c3_val ? $criterias->get(3)->subCriterias->firstWhere('value', $c3_val)->description ?? '-' : '-';
+                        $c4_desc = $c4_val ? $criterias->get(4)->subCriterias->firstWhere('value', $c4_val)->description ?? '-' : '-';
                     @endphp
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-5 py-4 text-center font-black text-slate-900 text-base whitespace-nowrap">
@@ -79,29 +85,12 @@
                             <div class="font-extrabold text-slate-900 whitespace-nowrap">{{ $res->candidate->name }}</div>
                             <div class="text-xs text-slate-500 font-mono whitespace-nowrap">{{ $res->candidate->code }} • NIK: {{ $res->candidate->nik ?? '-' }}</div>
                         </td>
-                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(1)->score_val ?? '-' }}</td>
-                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(2)->score_val ?? '-' }}</td>
-                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(3)->score_val ?? '-' }}</td>
-                        <td class="px-4 py-4 text-center font-bold whitespace-nowrap">{{ $scores->get(4)->score_val ?? '-' }}</td>
-                        <td class="px-4 py-4 text-center font-mono font-bold whitespace-nowrap">{{ round($res->smart_score * 100, 1) }}%</td>
-                        <td class="px-4 py-4 text-center font-mono font-bold whitespace-nowrap">{{ round($res->swot_score * 100, 1) }}%</td>
-                        <td class="px-4 py-4 text-center font-mono font-black text-sky-700 text-base whitespace-nowrap">
-                            {{ round($res->final_score * 100, 2) }}%
-                        </td>
-                        <td class="px-5 py-4 text-center whitespace-nowrap">
-                            @if($res->recommendation_status == 'Diterima')
-                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-300">
-                                    DITERIMA
-                                </span>
-                            @elseif($res->recommendation_status == 'Pertimbangan')
-                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-900 border border-amber-300">
-                                    PERTIMBANGAN
-                                </span>
-                            @else
-                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-xs font-extrabold bg-rose-100 text-rose-900 border border-rose-300">
-                                    DITOLAK
-                                </span>
-                            @endif
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[200px] whitespace-normal">{{ $c1_desc }}</td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[200px] whitespace-normal">{{ $c2_desc }}</td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[200px] whitespace-normal">{{ $c3_desc }}</td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[200px] whitespace-normal">{{ $c4_desc }}</td>
+                        <td class="px-5 py-4 text-center whitespace-nowrap font-bold text-slate-800">
+                            {{ strtoupper($res->recommendation_status) }}
                         </td>
                     </tr>
                     @empty

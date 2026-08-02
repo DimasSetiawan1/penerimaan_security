@@ -27,7 +27,7 @@ class ReportController extends Controller
         }
 
         $results = $query->orderBy('rank', 'asc')->get();
-        $criterias = Criteria::all();
+        $criterias = Criteria::with('subCriterias')->get()->keyBy('id');
 
         return view('reports.index', compact('results', 'criterias'));
     }
@@ -43,7 +43,7 @@ class ReportController extends Controller
         }
 
         $results = $query->orderBy('rank', 'asc')->get();
-        $criterias = Criteria::all();
+        $criterias = Criteria::with('subCriterias')->get()->keyBy('id');
 
         return view('reports.print', compact('results', 'criterias'));
     }

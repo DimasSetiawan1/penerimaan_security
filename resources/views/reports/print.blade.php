@@ -69,9 +69,6 @@
                         <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Kesehatan</th>
                         <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Pengalaman</th>
                         <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Kesiapan Shift</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Indikator</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Potensi</th>
-                        <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Skor Akhir</th>
                         <th class="p-2.5 border border-slate-300 text-center whitespace-nowrap">Hasil Keputusan</th>
                     </tr>
                 </thead>
@@ -79,6 +76,15 @@
                     @foreach($results as $res)
                     @php
                         $scores = $res->candidate->scores->keyBy('criteria_id');
+                        $c1_val = $scores->get(1)->score_val ?? null;
+                        $c2_val = $scores->get(2)->score_val ?? null;
+                        $c3_val = $scores->get(3)->score_val ?? null;
+                        $c4_val = $scores->get(4)->score_val ?? null;
+                        
+                        $c1_desc = $c1_val ? $criterias->get(1)->subCriterias->firstWhere('value', $c1_val)->description ?? '-' : '-';
+                        $c2_desc = $c2_val ? $criterias->get(2)->subCriterias->firstWhere('value', $c2_val)->description ?? '-' : '-';
+                        $c3_desc = $c3_val ? $criterias->get(3)->subCriterias->firstWhere('value', $c3_val)->description ?? '-' : '-';
+                        $c4_desc = $c4_val ? $criterias->get(4)->subCriterias->firstWhere('value', $c4_val)->description ?? '-' : '-';
                     @endphp
                     <tr>
                         <td class="p-2.5 border border-slate-300 text-center font-black whitespace-nowrap">#{{ $res->rank }}</td>
@@ -86,23 +92,12 @@
                             <span class="font-bold">{{ $res->candidate->name }}</span>
                             <span class="block text-[10px] text-slate-500 font-mono">{{ $res->candidate->code }} • NIK: {{ $res->candidate->nik ?? '-' }}</span>
                         </td>
-                        <td class="p-2.5 border border-slate-300 text-center font-semibold whitespace-nowrap">{{ $scores->get(1)->score_val ?? '-' }}</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-semibold whitespace-nowrap">{{ $scores->get(2)->score_val ?? '-' }}</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-semibold whitespace-nowrap">{{ $scores->get(3)->score_val ?? '-' }}</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-semibold whitespace-nowrap">{{ $scores->get(4)->score_val ?? '-' }}</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-mono whitespace-nowrap">{{ round($res->smart_score * 100, 1) }}%</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-mono whitespace-nowrap">{{ round($res->swot_score * 100, 1) }}%</td>
-                        <td class="p-2.5 border border-slate-300 text-center font-mono font-black text-slate-900 text-sm whitespace-nowrap">
-                            {{ round($res->final_score * 100, 2) }}%
-                        </td>
+                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c1_desc }}</td>
+                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c2_desc }}</td>
+                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c3_desc }}</td>
+                        <td class="p-2.5 border border-slate-300 text-[10px] font-semibold max-w-[150px]">{{ $c4_desc }}</td>
                         <td class="p-2.5 border border-slate-300 text-center font-extrabold whitespace-nowrap">
-                            @if($res->recommendation_status == 'Diterima')
-                                <span class="text-emerald-700">DITERIMA</span>
-                            @elseif($res->recommendation_status == 'Pertimbangan')
-                                <span class="text-amber-700">PERTIMBANGAN</span>
-                            @else
-                                <span class="text-rose-700">DITOLAK</span>
-                            @endif
+                            {{ strtoupper($res->recommendation_status) }}
                         </td>
                     </tr>
                     @endforeach
