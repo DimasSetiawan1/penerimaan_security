@@ -15,7 +15,7 @@
         @media print {
             body { bg-color: #ffffff !important; }
             .no-print { display: none !important; }
-            @page { margin: 1.5cm; size: A4 portrait; }
+            @page { margin: 1.5cm; size: A4 landscape; }
         }
     </style>
 </head>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Official Paper Layout -->
-    <div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-sm border border-slate-200 space-y-8">
+    <div class="max-w-4xl print:max-w-none mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-sm border border-slate-200 space-y-8">
         
         <!-- Kop Surat Official -->
         <div class="border-b-2 border-slate-900 pb-4 text-center">
