@@ -50,10 +50,15 @@
                     @forelse($candidates as $cand)
                     @php
                         $scores = $cand->scores->keyBy('criteria_id');
-                        $c1 = $scores->get(1)->score_val ?? '-';
-                        $c2 = $scores->get(2)->score_val ?? '-';
-                        $c3 = $scores->get(3)->score_val ?? '-';
-                        $c4 = $scores->get(4)->score_val ?? '-';
+                        $c1_val = $scores->get(1)->score_val ?? null;
+                        $c2_val = $scores->get(2)->score_val ?? null;
+                        $c3_val = $scores->get(3)->score_val ?? null;
+                        $c4_val = $scores->get(4)->score_val ?? null;
+
+                        $c1 = $c1_val ? $criterias->get(1)->subCriterias->firstWhere('value', $c1_val)->description ?? '-' : '-';
+                        $c2 = $c2_val ? $criterias->get(2)->subCriterias->firstWhere('value', $c2_val)->description ?? '-' : '-';
+                        $c3 = $c3_val ? $criterias->get(3)->subCriterias->firstWhere('value', $c3_val)->description ?? '-' : '-';
+                        $c4 = $c4_val ? $criterias->get(4)->subCriterias->firstWhere('value', $c4_val)->description ?? '-' : '-';
                         $res = $cand->calculationResult;
                         $swot = $cand->swotEvaluation;
                     @endphp
@@ -69,26 +74,10 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
-                                {{ $c1 }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
-                                {{ $c2 }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
-                                {{ $c3 }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-center font-bold">
-                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-black text-xs">
-                                {{ $c4 }}
-                            </span>
-                        </td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[150px] whitespace-normal">{{ $c1 }}</td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[150px] whitespace-normal">{{ $c2 }}</td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[150px] whitespace-normal">{{ $c3 }}</td>
+                        <td class="px-4 py-4 text-xs font-semibold max-w-[150px] whitespace-normal">{{ $c4 }}</td>
                         <td class="px-5 py-4 whitespace-nowrap text-center">
                             @if($swot)
                             @php
@@ -121,23 +110,11 @@
                         <td class="px-4 py-4 whitespace-nowrap text-center font-black text-sky-600 text-base">
                             {{ $res ? round($res->final_score * 100, 2) . '%' : '-' }}
                         </td>
-                        <td class="px-5 py-4 whitespace-nowrap text-center">
+                        <td class="px-5 py-4 whitespace-nowrap text-center font-bold text-slate-800">
                             @if($res)
-                                @if($res->recommendation_status == 'Diterima')
-                                    <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                                        DITERIMA
-                                    </span>
-                                @elseif($res->recommendation_status == 'Pertimbangan')
-                                    <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300">
-                                        PERTIMBANGAN
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300">
-                                        DITOLAK
-                                    </span>
-                                @endif
+                                {{ strtoupper($res->recommendation_status) }}
                             @else
-                                <span class="inline-flex items-center justify-center whitespace-nowrap px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs font-semibold">Belum Evaluasi</span>
+                                <span class="text-slate-500 font-semibold text-xs">BELUM EVALUASI</span>
                             @endif
                         </td>
                         <td class="px-4 py-4 whitespace-nowrap text-center">

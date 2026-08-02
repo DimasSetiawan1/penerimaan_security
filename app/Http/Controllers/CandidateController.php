@@ -33,7 +33,7 @@ class CandidateController extends Controller
         }
 
         $candidates = $query->latest()->paginate(10);
-        $criterias = Criteria::all();
+        $criterias = Criteria::with('subCriterias')->get()->keyBy('id');
 
         return view('candidates.index', compact('candidates', 'criterias'));
     }
