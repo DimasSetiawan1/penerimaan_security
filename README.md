@@ -586,6 +586,119 @@ e. Pengujian Hak Akses Pengguna (Role-Based Access Control)
 
 ---
 
+## 💻 Lampiran Listing Code Utama (Untuk Keperluan Skripsi)
+
+Berikut adalah potongan *source code* utama yang mengimplementasikan inti sistem, yaitu algoritma perhitungan SPK dan integrasi metode SMART & Analisis SWOT. Kode ini merupakan "otak" dari sistem seleksi dan cocok dilampirkan pada bab implementasi atau lampiran skripsi.
+
+### 1. Implementasi Algoritma SMART & SWOT (`SmartSwotService.php`)
+
+Kode ini terletak pada layer *Service* (`app/Services/SmartSwotService.php`) yang diakses oleh controller. Service ini melakukan normalisasi bobot, menghitung nilai utilitas (SMART), menurunkan faktor SWOT dari kriteria yang dipilih, mengklasifikasikan ke dalam kuadran, dan mengakumulasi skor akhir secara otomatis.
+
+```php
+// File: app/Services/SmartSwotService.php (Potongan Inti)
+
+public function calculateAll()
+{
+    $criterias = Criteria::all();
+    
+    // 1. Hitung Normalisasi Bobot Kriteria (w_j)
+    $totalWeight = $criterias->sum('weight');
+    $normalizedWeights = [];
+    foreach ($criterias as $crit) {
+        $normalizedWeights[$crit->id] = $totalWeight > 0 ? ($crit->weight / $totalWeight) : 0;
+    }
+
+    $candidates = Candidate::with(['scores.criteria', 'swotEvaluation'])->get();
+
+    foreach ($candidates as $candidate) {
+        $smartTotal = 0;
+
+        // 2. Perhitungan SMART (Nilai Utilitas & Terbobot)
+        foreach ($criterias as $crit) {
+            $scoreModel = $candidate->scores->firstWhere('criteria_id', $crit->id);
+            $rawScore = $scoreModel ? $scoreModel->score_val : 1;
+            
+            $min = $crit->min_val > 0 ? $crit->min_val : 1;
+            $max = $crit->max_val > 0 ? $crit->max_val : 5;
+
+            // Rumus Normalisasi SMART (Benefit/Cost)
+            if ($crit->type === 'benefit') {
+                $utility = ($max - $min) > 0 ? ($rawScore - $min) / ($max - $min) : 0;
+            } else {
+                $utility = ($max - $min) > 0 ? ($max - $rawScore) / ($max - $min) : 0;
+            }
+
+            $smartTotal += ($utility * $normalizedWeights[$crit->id]);
+        }
+
+        // 3. Ekstraksi Otomatis Nilai SWOT (S, W, O, T) dari Indikator C1-C4
+        // S: Rata-rata C1-C3 | W: Inverse S | O: C4 | T: Inverse O
+        // ... (Logika ekstraksi variabel $S, $W, $O, $T dari skor)
+        
+        $ifas = $S - $W; // Faktor Internal
+        $efas = $O - $T; // Faktor Eksternal
+
+        // Klasifikasi Kuadran SWOT & Rekomendasi Strategi
+        if ($ifas >= 0 && $efas >= 0) {
+            $quadrant = 'SO'; $strategy = 'Kualifikasi Sangat Layak...';
+        } elseif ($ifas >= 0 && $efas < 0) {
+            $quadrant = 'ST'; $strategy = 'Kualifikasi Layak...';
+        } elseif ($ifas < 0 && $efas >= 0) {
+            $quadrant = 'WO'; $strategy = 'Kualifikasi Pertimbangan...';
+        } else {
+            $quadrant = 'WT'; $strategy = 'Kualifikasi Tidak Layak...';
+        }
+
+        // Normalisasi Skor SWOT (Konversi ke skala 0.0 - 1.0)
+        $swotNormalized = (($S + $O) + (5 - $W) + (5 - $T)) / 20;
+
+        // 4. Kalkulasi Skor Akhir Kelayakan (70% SMART + 30% SWOT)
+        $finalScore = (0.70 * $smartTotal) + (0.30 * $swotNormalized);
+
+        // ... (Simpan status 'Diterima'/'Pertimbangan'/'Ditolak' ke DB)
+    }
+}
+```
+
+### 2. Implementasi Controller Input Data (`CandidateController.php`)
+
+Kode ini mengatur transaksi input data pelamar dari formulir, menyimpan ke database menggunakan `DB::transaction`, dan langsung memicu sistem perhitungan secara *real-time*.
+
+```php
+// File: app/Http/Controllers/CandidateController.php (Potongan Inti)
+
+public function store(Request $request)
+{
+    // 1. Validasi Input Data
+    $request->validate([
+        'nik' => ['required', 'digits:16'],
+        'name' => ['required', 'string'],
+        // ...
+        'scores' => ['required', 'array', 'size:' . Criteria::count()],
+    ]);
+
+    // 2. Transaksi Database (Atomic Save)
+    DB::transaction(function () use ($request) {
+        $candidate = Candidate::create([ /* ... Biodata ... */ ]);
+
+        // Simpan nilai indikator kualifikasi (1-5)
+        foreach ($request->scores as $critId => $val) {
+            CandidateScore::create([
+                'candidate_id' => $candidate->id,
+                'criteria_id' => $critId,
+                'score_val' => $val,
+            ]);
+        }
+    });
+
+    // 3. Pemicu Otomatis (Trigger) Evaluasi Kelayakan & Perangkingan
+    $this->smartSwotService->calculateAll();
+
+    return redirect()->route('candidates.index')
+        ->with('success', 'Data pelamar berhasil ditambahkan dan dievaluasi.');
+}
+```
+
 ## 📄 Lisensi
 
 Sistem Penilaian & Seleksi Penerimaan Security ini dikembangkan untuk PT Sentra Niaga Bekasi guna mengoptimalkan proses seleksi anggota keamanan yang obyektif, terstandar, dan profesional.
